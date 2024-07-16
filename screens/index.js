@@ -1,8 +1,8 @@
-import Home from "./Home";
-import Cart from "./Cart";
-import Order from "./Order";
-import Profile from "./Profile";
-import Wishlist from "./Wishlist";
+import Home from "./Home/Home";
+import Cart from "./Cart/Cart";
+import Order from "./Order/Order";
+import Profile from "./Profile/Profile";
+import Wishlist from "./Wishlist/Wishlist";
 
 export {
     Home,

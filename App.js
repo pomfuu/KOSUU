@@ -1,3 +1,5 @@
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { useFonts } from 'expo-font';
@@ -5,6 +7,11 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useCallback } from 'react';
 import utilityStyles from './utils/styles';
 import LandingLogo from './assets/KOSU/landingPageLogo.svg';
+import { Wishlist } from './screens';
+import ButtonTabNavigation from './navigation/ButtonTabNavigation';
+import CustomText from './styles/CustomText';
+
+const Stack = createNativeStackNavigator();
 
 SplashScreen.preventAutoHideAsync();
 
@@ -28,24 +35,36 @@ export default function App() {
     return null;
   }
 
+  Text.defaultProps = Text.defaultProps || {}
+  Text.defaultProps.style =  { fontFamily: 'afacad_Medium' }
+  
   return (
-    <View style={styles.container} onLayout={onLayoutRootView}>
-      <LandingLogo width={150}/>
-      {/* <Text style={[utilityStyles.fs5, styles.textStyle]}>Hello!</Text> */}
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer style={[styles.textStyle, styles.container]}>
+      <Stack.Navigator>
+        <Stack.Screen
+          name='Bottom Navigation'
+          component={ButtonTabNavigation}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name='Wishlist'
+          component={Wishlist}
+          options={{ headerShown: false }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FBFAF5',
+    backgroundColor: '#1e1e1e',
     alignItems: 'center',
     justifyContent: 'center',
   },
   textStyle: {
-    fontFamily: 'afacad_Regular',
+    fontFamily: 'afacad_Bold',
     color: '#1E1E1E'
   },
 });
