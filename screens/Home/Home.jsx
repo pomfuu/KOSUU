@@ -5,16 +5,21 @@ import LandingLogo from '../../assets/KOSU/landingPageLogo.svg';
 import Container from '../../styles/Container';
 import styles from './home.style';
 import Carousel from './Carousel';
+import { ScrollView } from 'react-native';
+import SearchBar from '../../components/SearchBar';
 
 const Home = () => {
   return (
     <Container>
-      <SafeAreaView>
-        <View>
-          <Text>Home</Text>
-          <Carousel/>
-        </View>
-      </SafeAreaView>
+        <SafeAreaView>
+            <SearchBar/>
+          <ScrollView ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
+              <View>
+                <Text>Home</Text>
+                <Carousel/>
+              </View>
+            </ScrollView>
+        </SafeAreaView>
     </Container>
   )
 }
