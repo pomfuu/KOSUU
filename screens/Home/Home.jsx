@@ -9,6 +9,7 @@ import { ScrollView } from 'react-native';
 import SearchBar from '../../components/SearchBar';
 import Categories from './Categories';
 import Card from '../../components/Card';
+import Tes from '../../components/Tes';
 
 const Home = () => {
   return (
@@ -20,6 +21,7 @@ const Home = () => {
             <Carousel />
             <Categories />
             <Card />
+            <Tes/>
           </View>
         </ScrollView>
       </SafeAreaView>
