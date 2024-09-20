@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import Swiper from 'react-native-swiper';
 import Slider1 from '../../assets/KOSU/Slider1.svg';
@@ -9,7 +9,7 @@ const Carousel = () => {
       <Swiper
         dotColor='#FBFAF5'
         activeDotColor='#FEC904'
-        containerStyle={{ borderRadius: 5, width: '100%', marginTop: 15 }}
+        containerStyle={{ borderRadius: 5, width: '100%', height: 250 }}
       >
         <View style={styles.slide}>
           <Slider1 width="100%" height="100%" />
@@ -26,8 +26,10 @@ export default Carousel;
 
 const styles = StyleSheet.create({
   carouselContainer: {
-    flex: 1,
-    alignItems: 'center',
+    width: '100%',
+    height: 180,  
+    marginTop: 0, 
+    paddingTop: 0,
   },
   slide: {
     flex: 1,

@@ -8,7 +8,8 @@ const CustomSearchBar = () => {
     setSearch(search);
   };
 
-  return (
+  
+  return (                                                                                         
     <RNE_SearchBar
       placeholder="Search any cosplay product"
       onChangeText={updateSearch}
@@ -24,7 +25,7 @@ const CustomSearchBar = () => {
       inputContainerStyle={{
         backgroundColor: '#F3F0E1',
         borderRadius: 5,
-        height: 45,
+        height: 35,
       }}
       inputStyle={{
         fontSize: 16,
