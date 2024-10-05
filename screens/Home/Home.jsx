@@ -6,6 +6,7 @@ import Carousel from './Carousel';
 import SearchBar from '../../components/SearchBar';
 import Categories from './Categories';
 import Card from '../../components/Card';
+import Tes from '../../components/Tes';
 
 const Home = () => {
 
@@ -32,6 +33,9 @@ const Home = () => {
           <View style={styles.carouselWrapper}>
             <Carousel />
             <Categories />
+
+            <Card />
+            <Tes/>
             <Text style={styles.textHeader}>Popular items</Text>
             <View>
               <FlatList
