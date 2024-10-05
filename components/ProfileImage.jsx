@@ -3,6 +3,8 @@ import React from 'react';
 import CardImage from '../assets/KOSU/Card1.png';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+
+//tess
 const ProfPic = () => {
   return (
     <View style={styles.container}>
