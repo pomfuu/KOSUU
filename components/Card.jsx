@@ -1,24 +1,33 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
-import React from 'react'
-import CardImage from '../assets/KOSU/Card1.png'; // Import PNG image correctly
-import Icon from 'react-native-vector-icons/FontAwesome'; // Import vector icons
+import React, { useState } from 'react'
+import CardImage from '../assets/KOSU/Card1.png';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-const Card = () => {
+const Card = ({name, price, category}) => {
+  const [isLiked, setIsLiked] = useState(false);
+
+  const toggleWishlist = () => {
+    setIsLiked(!isLiked);
+  };
+
   return (
     <View>
-      <Text style={styles.textHeader}>Popular items</Text>
       <View style={styles.card}>
         <View style={styles.imageWrapper}>
           <Image source={CardImage} style={styles.image} />
-          <TouchableOpacity style={styles.wishlistButton}>
-            <Icon name="heart-o" size={20} color="#EC2A00" />
+          <TouchableOpacity style={styles.wishlistButton} onPress={toggleWishlist}>
+            <Icon 
+              name={isLiked ? "heart" : "heart-o"} 
+              size={20} 
+              color={isLiked ? "#EC2A00" : "#EC2A00"} 
+            />
           </TouchableOpacity>
         </View>
         
         <View style={styles.details}>
-          <Text style={styles.description}>Product Category</Text>
-          <Text style={styles.productName}>Product Name Placeholder</Text>
-          <Text style={styles.price}>Rp1000000</Text>
+          <Text style={styles.description}>{category}</Text>
+          <Text style={styles.productName}>{name}</Text>
+          <Text style={styles.price}>{price}</Text>
         </View>
       </View>
     </View>
@@ -50,7 +59,7 @@ const styles = StyleSheet.create({
     right: 10,
     backgroundColor: '#FBFAF5',
     borderRadius: 50,
-    padding: 10,
+    padding: 8,
   },
   details: {
     padding: 10,
@@ -77,4 +86,4 @@ const styles = StyleSheet.create({
     fontFamily: 'afacad_Bold',
     marginTop: 10,
   }
-})
+});
