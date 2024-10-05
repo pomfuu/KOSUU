@@ -54,7 +54,8 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#FBFAF5',
-    fontSize: 12,
+    fontFamily:'afacad_Medium',
+    fontSize: 14,
   },
   textHeader:{
     color: '#1A47BC',

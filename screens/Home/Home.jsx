@@ -7,6 +7,7 @@ import SearchBar from '../../components/SearchBar';
 import Categories from './Categories';
 import Card from '../../components/Card';
 import Tes from '../../components/Tes';
+import PopularCategories from './PopularCategories';
 
 const Home = () => {
 
@@ -28,15 +29,27 @@ const Home = () => {
   return (
     <Container>
       <SafeAreaView>
-        <SearchBar />
-        <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
+        <SearchBar/>
+        <ScrollView 
+          showsVerticalScrollIndicator={false} 
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.scrollContainer}>
           <View style={styles.carouselWrapper}>
             <Carousel />
             <Categories />
-
-            <Card />
-            <Tes/>
             <Text style={styles.textHeader}>Popular items</Text>
+            <View>
+              <FlatList
+                data={cards}
+                renderItem={renderCard}
+                keyExtractor={item => item.id}
+                numColumns={2}
+                columnWrapperStyle={styles.row}
+                scrollEnabled={false}
+              />
+            </View>
+            <PopularCategories/>
+            <Text style={styles.textHeader}>Explore more items</Text>
             <View>
               <FlatList
                 data={cards}
@@ -57,6 +70,9 @@ const Home = () => {
 export default Home;
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    paddingBottom: 150
+  },
   carouselWrapper: {
     flex: 1,
     marginTop: 0,
@@ -68,12 +84,12 @@ const styles = StyleSheet.create({
   },
   cardWrapper: {
     flex: 1,
-    marginHorizontal: 5,
   },
   textHeader: {
     color: '#1A47BC',
     fontSize: 16, 
     fontFamily: 'afacad_Bold',
     marginTop: 10,
+    marginBottom: 5,
   },
 });

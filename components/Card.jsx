@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import CardImage from '../assets/KOSU/Card1.png';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const Card = ({name, price, category}) => {
+const Card = ({ name, price, category, showHeader }) => {
   const [isLiked, setIsLiked] = useState(false);
 
   const toggleWishlist = () => {
@@ -12,6 +12,7 @@ const Card = ({name, price, category}) => {
 
   return (
     <View>
+      {showHeader && <Text style={styles.textHeader}>Popular items</Text>}
       <View style={styles.card}>
         <View style={styles.imageWrapper}>
           <Image source={CardImage} style={styles.image} />
@@ -19,11 +20,11 @@ const Card = ({name, price, category}) => {
             <Icon 
               name={isLiked ? "heart" : "heart-o"} 
               size={20} 
-              color={isLiked ? "#EC2A00" : "#EC2A00"} 
+              color="#EC2A00" 
             />
           </TouchableOpacity>
         </View>
-        
+
         <View style={styles.details}>
           <Text style={styles.description}>{category}</Text>
           <Text style={styles.productName}>{name}</Text>
@@ -31,10 +32,10 @@ const Card = ({name, price, category}) => {
         </View>
       </View>
     </View>
-  )
-}
+  );
+};
 
-export default Card
+export default Card;
 
 const styles = StyleSheet.create({
   card: {
@@ -82,8 +83,9 @@ const styles = StyleSheet.create({
   },
   textHeader: {
     color: '#1A47BC',
-    fontSize: 16, 
+    fontSize: 16,
     fontFamily: 'afacad_Bold',
     marginTop: 10,
+    marginBottom: 10,
   }
 });
