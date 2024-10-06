@@ -2,10 +2,17 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import CardImage from '../assets/KOSU/Card1.png';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { useNavigation } from '@react-navigation/native';
 
-const Card = ({ name, price, category, showHeader }) => {
+const Card = ({ showHeader, category, name, price }) => {
+  const navigation = useNavigation();
+  
+  const handleCardPressed = () => {
+    navigation.navigate('CardDetail', { name, category, price, image: CardImage });
+  };
+  
   const [isLiked, setIsLiked] = useState(false);
-
+  
   const toggleWishlist = () => {
     setIsLiked(!isLiked);
   };
@@ -13,7 +20,8 @@ const Card = ({ name, price, category, showHeader }) => {
   return (
     <View>
       {showHeader && <Text style={styles.textHeader}>Popular items</Text>}
-      <View style={styles.card}>
+      
+      <TouchableOpacity style={styles.card} onPress={handleCardPressed}>
         <View style={styles.imageWrapper}>
           <Image source={CardImage} style={styles.image} />
           <TouchableOpacity style={styles.wishlistButton} onPress={toggleWishlist}>
@@ -30,7 +38,7 @@ const Card = ({ name, price, category, showHeader }) => {
           <Text style={styles.productName}>{name}</Text>
           <Text style={styles.price}>{price}</Text>
         </View>
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };
