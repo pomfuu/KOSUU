@@ -4,11 +4,11 @@ import CardImage from '../assets/KOSU/Card1.png';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 
-const Card = ({ showHeader, category, name, price }) => {
+const Card = ({ showHeader, category, name, price, rating, description, stock, material, sizeChart, dimension, condition, notes, variant, size, color }) => {
   const navigation = useNavigation();
   
   const handleCardPressed = () => {
-    navigation.navigate('CardDetail', { name, category, price, image: CardImage });
+    navigation.navigate('CardDetail', { name, category, price, image: CardImage, rating, description, stock, material, sizeChart, dimension, condition, notes, variant, size, color });
   };
   
   const [isLiked, setIsLiked] = useState(false);

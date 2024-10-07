@@ -12,16 +12,16 @@ import PopularCategories from './PopularCategories';
 const Home = () => {
 
   const cards = [
-    { id: '1', name: 'Product 1', price: 'Rp1000000', category: 'Category placeholder' },
-    { id: '2', name: 'Product 2', price: 'Rp2000000', category: 'Category placeholder' },
-    { id: '3', name: 'Product 3', price: 'Rp3000000', category: 'Category placeholder' },
-    { id: '4', name: 'Product 4', price: 'Rp4000000', category: 'Category placeholder' },
+    { id: '1', name: 'Product 1', price: 'Rp1000000', category: 'Bags', rating: '4.9', description: 'Lorem Ipsum sir Amet', stock: '13', material: 'leather', sizeChart: 'One size', dimension:'30cm x 45cm x 15cm', condition: 'New', notes: '', variant: ['Regular'], size: ['One Size'], color: ['Red', 'White'] },
+    { id: '2', name: 'Product 2', price: 'Rp2000000', category: 'Category placeholder', rating: '4.9', description: 'Lorem Ipsum sir Amet', stock: '13', material: 'leather', sizeChart: 'One size', dimension:'30cm x 45cm x 15cm', condition: 'New', notes: '' ,variant: ['Regular'], size: ['One Size'], color: ['Red', 'White'] },
+    { id: '3', name: 'Product 3', price: 'Rp3000000', category: 'Category placeholder', rating: '4.9', description: 'Lorem Ipsum sir Amet', stock: '13', material: 'leather', sizeChart: 'One size', dimension:'30cm x 45cm x 15cm', condition: 'New', notes: '' ,variant: ['Regular'], size: ['One Size'], color: ['Red', 'White'] },
+    { id: '4', name: 'Product 4', price: 'Rp4000000', category: 'Category placeholder', rating: '4.9', description: 'Lorem Ipsum sir Amet', stock: '13', material: 'leather', sizeChart: 'One size', dimension:'30cm x 45cm x 15cm', condition: 'New', notes: '' ,variant: ['Regular'], size: ['One Size'], color: ['Red', 'White'] },
   ];
 
   const renderCard = ({ item }) => {
     return (
       <View style={styles.cardWrapper}>
-        <Card name={item.name} price={item.price} category={item.category} />
+        <Card {...item} />
       </View>
     );
   };
