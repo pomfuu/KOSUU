@@ -104,6 +104,16 @@ const Profile = () => {
             </View>
           </View>
         </View>
+        <View>
+          <Text style={{ fontSize: 18, fontFamily: 'afacad_Bold', color: '#1A47BC' }}>Account Settings</Text>
+            <View style={styles.accountDetailWrapper3}>
+            <TouchableOpacity>
+              <View style={{ flexDirection: 'row'}}>
+                <Text style={{ fontSize: 16, fontFamily: 'afacad_Bold', color: '#1E69F2' }}>Logout</Text>
+              </View>
+            </TouchableOpacity>
+            </View>
+        </View>
       </Container>
     </ScrollView>
   );
@@ -141,6 +151,12 @@ const styles = StyleSheet.create({
   accountDetailWrapper2: {
     marginTop: 10,
     backgroundColor: '#EAF3FA',
+    padding: 20,
+    width: '100%',
+    borderRadius: 5,
+    marginBottom: 25,
+  },
+  accountDetailWrapper3: {
     padding: 20,
     width: '100%',
     borderRadius: 5,
