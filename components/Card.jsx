@@ -2,39 +2,48 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import CardImage from '../assets/KOSU/Card1.png';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { useNavigation } from '@react-navigation/native';
 
-const Card = ({name, price, category}) => {
+const Card = ({ showHeader, category, name, price, rating, description, stock, material, sizeChart, dimension, condition, notes, variant, size, color }) => {
+  const navigation = useNavigation();
+  
+  const handleCardPressed = () => {
+    navigation.navigate('CardDetail', { name, category, price, image: CardImage, rating, description, stock, material, sizeChart, dimension, condition, notes, variant, size, color });
+  };
+  
   const [isLiked, setIsLiked] = useState(false);
-
+  
   const toggleWishlist = () => {
     setIsLiked(!isLiked);
   };
 
   return (
     <View>
-      <View style={styles.card}>
+      {showHeader && <Text style={styles.textHeader}>Popular items</Text>}
+      
+      <TouchableOpacity style={styles.card} onPress={handleCardPressed}>
         <View style={styles.imageWrapper}>
           <Image source={CardImage} style={styles.image} />
           <TouchableOpacity style={styles.wishlistButton} onPress={toggleWishlist}>
             <Icon 
               name={isLiked ? "heart" : "heart-o"} 
               size={20} 
-              color={isLiked ? "#EC2A00" : "#EC2A00"} 
+              color="#EC2A00" 
             />
           </TouchableOpacity>
         </View>
-        
+
         <View style={styles.details}>
           <Text style={styles.description}>{category}</Text>
           <Text style={styles.productName}>{name}</Text>
           <Text style={styles.price}>{price}</Text>
         </View>
-      </View>
+      </TouchableOpacity>
     </View>
-  )
-}
+  );
+};
 
-export default Card
+export default Card;
 
 const styles = StyleSheet.create({
   card: {
@@ -82,8 +91,9 @@ const styles = StyleSheet.create({
   },
   textHeader: {
     color: '#1A47BC',
-    fontSize: 16, 
+    fontSize: 16,
     fontFamily: 'afacad_Bold',
     marginTop: 10,
+    marginBottom: 10,
   }
 });

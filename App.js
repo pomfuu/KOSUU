@@ -10,6 +10,7 @@ import LandingLogo from './assets/KOSU/landingPageLogo.svg';
 import { Wishlist } from './screens';
 import ButtonTabNavigation from './navigation/ButtonTabNavigation';
 import CustomText from './styles/CustomText';
+import CardDetail from './components/CardDetail';
 
 const Stack = createNativeStackNavigator();
 
@@ -50,6 +51,11 @@ export default function App() {
           name='Wishlist'
           component={Wishlist}
           options={{ headerShown: false }}
+        />
+        <Stack.Screen 
+          name="CardDetail" 
+          component={CardDetail}
+          options={{ headerShown: false }} 
         />
       </Stack.Navigator>
     </NavigationContainer>

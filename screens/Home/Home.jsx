@@ -7,20 +7,21 @@ import SearchBar from '../../components/SearchBar';
 import Categories from './Categories';
 import Card from '../../components/Card';
 import Tes from '../../components/Tes';
+import PopularCategories from './PopularCategories';
 
 const Home = () => {
 
   const cards = [
-    { id: '1', name: 'Product 1', price: 'Rp1000000', category: 'Category placeholder' },
-    { id: '2', name: 'Product 2', price: 'Rp2000000', category: 'Category placeholder' },
-    { id: '3', name: 'Product 3', price: 'Rp3000000', category: 'Category placeholder' },
-    { id: '4', name: 'Product 4', price: 'Rp4000000', category: 'Category placeholder' },
+    { id: '1', name: 'Product 1', price: 'Rp1000000', category: 'Bags', rating: '4.9', description: 'Lorem Ipsum sir Amet', stock: '13', material: 'leather', sizeChart: 'One size', dimension:'30cm x 45cm x 15cm', condition: 'New', notes: '', variant: ['Regular'], size: ['One Size'], color: ['Red', 'White'] },
+    { id: '2', name: 'Product 2', price: 'Rp2000000', category: 'Category placeholder', rating: '4.9', description: 'Lorem Ipsum sir Amet', stock: '13', material: 'leather', sizeChart: 'One size', dimension:'30cm x 45cm x 15cm', condition: 'New', notes: '' ,variant: ['Regular'], size: ['One Size'], color: ['Red', 'White'] },
+    { id: '3', name: 'Product 3', price: 'Rp3000000', category: 'Category placeholder', rating: '4.9', description: 'Lorem Ipsum sir Amet', stock: '13', material: 'leather', sizeChart: 'One size', dimension:'30cm x 45cm x 15cm', condition: 'New', notes: '' ,variant: ['Regular'], size: ['One Size'], color: ['Red', 'White'] },
+    { id: '4', name: 'Product 4', price: 'Rp4000000', category: 'Category placeholder', rating: '4.9', description: 'Lorem Ipsum sir Amet', stock: '13', material: 'leather', sizeChart: 'One size', dimension:'30cm x 45cm x 15cm', condition: 'New', notes: '' ,variant: ['Regular'], size: ['One Size'], color: ['Red', 'White'] },
   ];
 
   const renderCard = ({ item }) => {
     return (
       <View style={styles.cardWrapper}>
-        <Card name={item.name} price={item.price} category={item.category} />
+        <Card {...item} />
       </View>
     );
   };
@@ -28,15 +29,27 @@ const Home = () => {
   return (
     <Container>
       <SafeAreaView>
-        <SearchBar />
-        <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
+        <SearchBar/>
+        <ScrollView 
+          showsVerticalScrollIndicator={false} 
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.scrollContainer}>
           <View style={styles.carouselWrapper}>
             <Carousel />
             <Categories />
-
-            <Card />
-            <Tes/>
             <Text style={styles.textHeader}>Popular items</Text>
+            <View>
+              <FlatList
+                data={cards}
+                renderItem={renderCard}
+                keyExtractor={item => item.id}
+                numColumns={2}
+                columnWrapperStyle={styles.row}
+                scrollEnabled={false}
+              />
+            </View>
+            <PopularCategories/>
+            <Text style={styles.textHeader}>Explore more items</Text>
             <View>
               <FlatList
                 data={cards}
@@ -57,6 +70,9 @@ const Home = () => {
 export default Home;
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    paddingBottom: 150
+  },
   carouselWrapper: {
     flex: 1,
     marginTop: 0,
@@ -68,12 +84,12 @@ const styles = StyleSheet.create({
   },
   cardWrapper: {
     flex: 1,
-    marginHorizontal: 5,
   },
   textHeader: {
     color: '#1A47BC',
     fontSize: 16, 
     fontFamily: 'afacad_Bold',
     marginTop: 10,
+    marginBottom: 5,
   },
 });
