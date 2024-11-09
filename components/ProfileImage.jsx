@@ -4,7 +4,7 @@ import CardImage from '../assets/KOSU/Card1.png';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 
-//tess
+//Tes push 5 Oct 23:06
 const ProfPic = () => {
   return (
     <View style={styles.container}>
