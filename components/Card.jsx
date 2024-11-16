@@ -1,8 +1,9 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
-import CardImage from '../assets/KOSU/Card1.png';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
+import { storage } from '../config';
+import { ref, getDownloadURL } from 'firebase/storage'; // Import ref and getDownloadURL
 
 const Card = ({ showHeader, category, name, price, rating, description, stock, material, sizeChart, dimension, condition, notes, variant, size, color }) => {
   const navigation = useNavigation();
@@ -12,10 +13,25 @@ const Card = ({ showHeader, category, name, price, rating, description, stock, m
   };
   
   const [isLiked, setIsLiked] = useState(false);
-  
+  const [imageUrl, setImageUrl] = useState(null);
+
   const toggleWishlist = () => {
     setIsLiked(!isLiked);
   };
+
+  // Fetch the image URL from Firebase Storage
+  useEffect(() => {
+    const fetchImage = async () => {
+      try {
+        const imageRef = ref(storage, 'gs://teskosudulu.firebasestorage.app/photomode_07112024_193212.png'); // Replace with your file path in storage
+        const url = await getDownloadURL(imageRef);
+        setImageUrl(url);
+      } catch (error) {
+        console.error("Error fetching image from Firebase:", error);
+      }
+    };
+    fetchImage();
+  }, []);
 
   return (
     <View>
@@ -23,7 +39,11 @@ const Card = ({ showHeader, category, name, price, rating, description, stock, m
       
       <TouchableOpacity style={styles.card} onPress={handleCardPressed}>
         <View style={styles.imageWrapper}>
-          <Image source={CardImage} style={styles.image} />
+          {imageUrl ? (
+            <Image source={{ uri: imageUrl }} style={styles.image} />
+          ) : (
+            <Text>Loading...</Text>
+          )}
           <TouchableOpacity style={styles.wishlistButton} onPress={toggleWishlist}>
             <Icon 
               name={isLiked ? "heart" : "heart-o"} 
@@ -36,7 +56,7 @@ const Card = ({ showHeader, category, name, price, rating, description, stock, m
         <View style={styles.details}>
           <Text style={styles.description}>{category}</Text>
           <Text style={styles.productName}>{name}</Text>
-          <Text style={styles.price}>{price}</Text>
+          <Text style={styles.price}>Rp. {price}</Text>
         </View>
       </TouchableOpacity>
     </View>
