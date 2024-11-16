@@ -7,10 +7,15 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useCallback } from 'react';
 import utilityStyles from './utils/styles';
 import LandingLogo from './assets/KOSU/landingPageLogo.svg';
-import { Wishlist } from './screens';
+import { Profile, Wishlist } from './screens';
 import ButtonTabNavigation from './navigation/ButtonTabNavigation';
 import CustomText from './styles/CustomText';
 import CardDetail from './components/CardDetail';
+import LandingPageOne from './screens/Login/LandingPageOne';
+import LandingPageTwo from './screens/Login/LandingPageTwo';
+import LandingPageThree from './screens/Login/LandingPageThree';
+import Login from './screens/Login/Login';
+import Register from './screens/Login/Register';
 
 const Stack = createNativeStackNavigator();
 
@@ -24,6 +29,7 @@ export default function App() {
     afacad_Medium: require("./assets/font/afacad/static/Afacad-Medium.ttf"),
     afacad_SemiBold: require("./assets/font/afacad/static/Afacad-SemiBold.ttf"),
     afacad_Bold: require("./assets/font/afacad/static/Afacad-Bold.ttf"),
+    neue: require("./assets/font/montreal/NeueMontreal-Medium.otf")
   });
 
   const onLayoutRootView = useCallback(async () => {
@@ -55,6 +61,35 @@ export default function App() {
         <Stack.Screen 
           name="CardDetail" 
           component={CardDetail}
+          options={{ headerShown: false }} 
+        />
+        <Stack.Screen
+          name='Profile'
+          component={Profile}
+        />
+        <Stack.Screen
+          name='LandingPageOne'
+          component={LandingPageOne}
+          options={{ headerShown: false }} 
+        />
+        <Stack.Screen
+          name='LandingPageTwo'
+          component={LandingPageTwo}
+          options={{ headerShown: false }} 
+        />
+        <Stack.Screen
+          name='LandingPageThree'
+          component={LandingPageThree}
+          options={{ headerShown: false }} 
+        />
+        <Stack.Screen
+          name='Login'
+          component={Login}
+          options={{ headerShown: false }} 
+        />
+        <Stack.Screen
+          name='Register'
+          component={Register}
           options={{ headerShown: false }} 
         />
       </Stack.Navigator>

@@ -5,10 +5,23 @@ import ProfileImage from '../../assets/KOSU/Profile/pic2.jpg';
 import EditIcon from '../../assets/KOSU/Profile/edit.png';
 import DateTimePicker, { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import CalendarIcon from 'react-native-vector-icons/FontAwesome';
+import LogoutIcon from 'react-native-vector-icons/FontAwesome';
+import HeaderNav from '../../navigation/HeaderNav';
+import { CommonActions, useNavigation } from '@react-navigation/native';
 
 const Profile = () => {
   const [date, setDate] = useState(new Date());
   const [showDate, setShowDate] = useState(false);
+  const navigation = useNavigation();
+
+  const handleLogout = () => {
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'LandingPageOne' }],
+      })
+    );
+  };
 
   const onChange = (event, selectedDate) => {
     if (event.type === 'dismissed') {
@@ -33,6 +46,8 @@ const Profile = () => {
   };
 
   return (
+    <View>
+    <View style={styles.profHead}></View>
     <ScrollView style={styles.wrapper}>
       <View style={styles.container}>
         <Image source={ProfileImage} style={styles.image} />
@@ -107,8 +122,9 @@ const Profile = () => {
         <View>
           <Text style={{ fontSize: 18, fontFamily: 'afacad_Bold', color: '#1A47BC' }}>Account Settings</Text>
             <View style={styles.accountDetailWrapper3}>
-            <TouchableOpacity>
-              <View style={{ flexDirection: 'row'}}>
+            <TouchableOpacity onPress={handleLogout}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <LogoutIcon name="sign-out" size={20} color="#1E69F2" style={{ marginRight: 8 }} />
                 <Text style={{ fontSize: 16, fontFamily: 'afacad_Bold', color: '#1E69F2' }}>Logout</Text>
               </View>
             </TouchableOpacity>
@@ -116,6 +132,8 @@ const Profile = () => {
         </View>
       </Container>
     </ScrollView>
+
+    </View>
   );
 };
 
@@ -134,6 +152,10 @@ export default Profile;
 const styles = StyleSheet.create({
   detailTitle: { fontSize: 16, fontFamily: 'afacad_Bold', color: '#587BCF'},
   detailValue: { fontSize: 16, fontFamily: 'afacad_SemiBold', color: '#1E1E1E', marginTop: 10 },
+  profHead:{
+    padding: 20,
+    backgroundColor: '#1A47BC',
+  },
   horizontalLine: {
     height: 1,
     backgroundColor: '#FFFFFC',
@@ -160,7 +182,7 @@ const styles = StyleSheet.create({
     padding: 20,
     width: '100%',
     borderRadius: 5,
-    marginBottom: 80,
+    marginBottom: 120,
   },
   wrapper: {
     backgroundColor: '#FBFAF5',
@@ -183,7 +205,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#1A47BC',
-    paddingTop: 70,
+    paddingTop: 40,
     paddingBottom: 35,
   },
   name: {
