@@ -9,9 +9,7 @@ const HeaderNav = ({title}) => {
 
   return (
     <View style = {styles.headerContainer}>
-        <TouchableOpacity onPress={() => 
-            navigation.navigate('Home')
-        }>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
             <Ionicons name='chevron-back' color="#1A47BC" size={20} />
         </TouchableOpacity>
         <Text style={styles.title}>{title}</Text>

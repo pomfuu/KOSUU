@@ -16,6 +16,7 @@ import LandingPageTwo from './screens/Login/LandingPageTwo';
 import LandingPageThree from './screens/Login/LandingPageThree';
 import Login from './screens/Login/Login';
 import Register from './screens/Login/Register';
+import Rating from './screens/Rating/Rating';
 
 const Stack = createNativeStackNavigator();
 
@@ -75,6 +76,11 @@ export default function App() {
         <Stack.Screen
           name='LandingPageTwo'
           component={LandingPageTwo}
+          options={{ headerShown: false }} 
+        />
+        <Stack.Screen
+          name='Rating'
+          component={Rating}
           options={{ headerShown: false }} 
         />
         <Stack.Screen

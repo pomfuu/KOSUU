@@ -1,40 +1,13 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Text, Dimensions } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Text, Dimensions, TouchableOpacity, Easing } from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
-import Container from '../../styles/Container';
+import * as Font from 'expo-font';
 import HeaderNav from '../../navigation/HeaderNav';
 
-const Packed = () => (
-  <Container>
-    <View style={styles.frame}>
-      <Text style={styles.text}>Packed Orders</Text>
-    </View>
-  </Container>
-);
-
-const Sent = () => (
-  <Container>
-    <View style={styles.frame}>
-      <Text style={styles.text}>Sent Orders</Text>
-    </View>
-  </Container>
-);
-
-const Completed = () => (
-  <Container>
-    <View style={styles.frame}>
-      <Text style={styles.text}>Completed Orders</Text>
-    </View>
-  </Container>
-);
-
-const Canceled = () => (
-  <Container>
-    <View style={styles.frame}>
-      <Text style={styles.text}>Canceled Orders</Text>
-    </View>
-  </Container>
-);
+import OrderPacked from './OrderPacked';
+import OrderSent from './OrderSent';
+import OrderCompleted from './OrderCompleted';
+import OrderCanceled from './OrderCanceled';
 
 const Order = () => {
   const [index, setIndex] = useState(0);
@@ -45,11 +18,43 @@ const Order = () => {
     { key: 'canceled', title: 'Canceled' },
   ]);
 
+  const CustomTabBar = (props) => (
+    <View style={styles.customTabBar}>
+      {props.navigationState.routes.map((route, i) => {
+        const focused = i === props.navigationState.index;
+        return (
+          <TouchableOpacity
+            key={route.key}
+            onPress={() => props.jumpTo(route.key)}
+            style={[
+              styles.tab,
+              { borderBottomColor: focused ? '#1A47BC' : 'transparent' },
+            ]}
+            activeOpacity={0.7}
+          >
+            <Text
+              style={{
+                fontFamily: 'afacad_Bold',
+                fontSize: 16,
+                color: focused ? '#1A47BC' : '#8BA0D8',
+                textAlign: 'center',
+              }}
+            >
+              {route.title}
+            </Text>
+          </TouchableOpacity>
+        );
+      })}
+    </View>
+  );
+  
+  
+
   const renderScene = SceneMap({
-    packed: Packed,
-    sent: Sent,
-    completed: Completed,
-    canceled: Canceled,
+    packed: OrderPacked,
+    sent: OrderSent,
+    completed: OrderCompleted,
+    canceled: OrderCanceled,
   });
 
   return (
@@ -60,29 +65,17 @@ const Order = () => {
           renderScene={renderScene}
           onIndexChange={setIndex}
           initialLayout={{ width: Dimensions.get('window').width }}
-          renderTabBar={(props) => (
-            <TabBar
-              {...props}
-              indicatorStyle={styles.indicator}
-              style={styles.tabBar}
-              activeColor="#1e1e1e"
-              inactiveColor="#8BA0D8" 
-              renderLabel={({ route, focused }) => (
-                <Text
-                  style={[
-                    styles.label,
-                    {
-                      color: focused ? '#1A47BC' : '#8BA0D8',
-                      fontFamily: 'afacad_Medium',
-                    },
-                  ]}
-                >
-                  {route.title}
-                </Text>
-              )}
-            />
-          )}
-        />
+          renderTabBar={(props) => <CustomTabBar {...props} />}
+          transitionSpec={{
+            open: { animation: 'timing', config: { duration: 300, easing: Easing.inOut(Easing.ease) } },
+            close: { animation: 'timing', config: { duration: 300, easing: Easing.inOut(Easing.ease) } },
+          }}
+          lazy
+          gestureHandlerProps={{
+            swipeVelocityImpact: 0.3,
+            overshootClamping: true,
+          }}
+        />;
     </View>
   );
 };
@@ -94,19 +87,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FBFAF5',
   },
-  frame: {
-    borderRadius: 10,
-    padding: 20,
-    margin: 10,
-  },
-  text: {
-    fontSize: 18,
-    color: '#1A47BC',
-    textAlign: 'center',
-  },
   tabBar: {
     backgroundColor: '#FFFFFC',
-    color: '#1A47BC'
   },
   indicator: {
     backgroundColor: '#1A47BC',
@@ -114,7 +96,23 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   label: {
-    fontSize: 16, 
-    fontFamily: 'afacad_Medium',
+    fontSize: 16,
+    fontFamily: 'afacad_Bold',
+  },
+  scrollTabBar: {
+    flexDirection: 'row',
+  },
+  customTabBar: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFC',
+  },
+  tab: {
+    marginLeft: 3,
+    minWidth: 94,
+    paddingVertical: 10,
+    borderBottomWidth: 2,
+    alignItems: 'center',
   },
 });
