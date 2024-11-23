@@ -7,7 +7,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useCallback } from 'react';
 import utilityStyles from './utils/styles';
 import LandingLogo from './assets/KOSU/landingPageLogo.svg';
-import { Profile, Wishlist } from './screens';
+import { Home, Profile, Wishlist } from './screens';
 import ButtonTabNavigation from './navigation/ButtonTabNavigation';
 import CustomText from './styles/CustomText';
 import CardDetail from './components/CardDetail';
