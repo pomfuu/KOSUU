@@ -6,6 +6,7 @@ import { useRoute } from '@react-navigation/native'
 import star from '../assets/KOSU/Icon/star_fill.png'
 import Reviews from './Reviews'
 import CartButton from './CartButton'
+import Card1Image from '../assets/KOSU/Card1.png';
 
 const CardDetail = () => {
   const route = useRoute();
@@ -48,7 +49,7 @@ const CardDetail = () => {
         contentContainerStyle={styles.scrollContainer}
       >
         <View>
-          <Image style={styles.productImage} source={image} />
+          <Image style={styles.productImage} source={{ uri: image }} />
         </View>
         <View style={styles.detail}>
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>

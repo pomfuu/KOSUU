@@ -5,11 +5,11 @@ import { useNavigation } from '@react-navigation/native';
 import { storage } from '../config';
 import { ref, getDownloadURL } from 'firebase/storage'; // Import ref and getDownloadURL
 
-const Card = ({ showHeader, category, name, price, rating, description, stock, material, sizeChart, dimension, condition, notes, variant, size, color }) => {
+const Card = ({ showHeader, category, name, price, rating, description, stock, material, sizeChart, dimension, condition, notes, variant, size, color, imageURL }) => {
   const navigation = useNavigation();
   
   const handleCardPressed = () => {
-    navigation.navigate('CardDetail', { name, category, price, image: CardImage, rating, description, stock, material, sizeChart, dimension, condition, notes, variant, size, color });
+    navigation.navigate('CardDetail', { name, category, price, image: imageUrl, rating, description, stock, material, sizeChart, dimension, condition, notes, variant, size, color });
   };
   
   const [isLiked, setIsLiked] = useState(false);
@@ -23,8 +23,10 @@ const Card = ({ showHeader, category, name, price, rating, description, stock, m
   useEffect(() => {
     const fetchImage = async () => {
       try {
-        const imageRef = ref(storage, 'gs://teskosudulu.firebasestorage.app/photomode_07112024_193212.png'); // Replace with your file path in storage
+        console.log('Storagee:', storage);
+        const imageRef = ref(storage, imageURL); // Replace with your file path in storage
         const url = await getDownloadURL(imageRef);
+        console.log(url);
         setImageUrl(url);
       } catch (error) {
         console.error("Error fetching image from Firebase:", error);
