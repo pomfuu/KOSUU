@@ -17,6 +17,9 @@ import LandingPageThree from './screens/Login/LandingPageThree';
 import Login from './screens/Login/Login';
 import Register from './screens/Login/Register';
 import Rating from './screens/Rating/Rating';
+import Checkout from './screens/Checkout/Checkout';
+import DebitCard from './screens/Checkout/DebitCard';
+import VirtualAccount from './screens/Checkout/VirtualAccount';
 
 const Stack = createNativeStackNavigator();
 
@@ -67,6 +70,21 @@ export default function App() {
         <Stack.Screen
           name='Profile'
           component={Profile}
+        />
+        <Stack.Screen
+          name='Checkout'
+          component={Checkout}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name='DebitCard'
+          component={DebitCard}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name='VirtualAccount'
+          component={VirtualAccount}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name='LandingPageOne'
