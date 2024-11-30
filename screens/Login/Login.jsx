@@ -17,8 +17,6 @@ const Login = () => {
 
   const navigation = useNavigation();
 
-  const handleClick = () => {
-    navigation.navigate('Bottom Navigation');
   const handleClick = async() => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
@@ -62,7 +60,6 @@ const Login = () => {
         <TextInput
             style={styles.inputUsername} 
             placeholder="Email" 
-            placeholderTextColor="#1A47BC" />
             placeholderTextColor="#1A47BC" 
             value={email}
             onChangeText={setEmail}

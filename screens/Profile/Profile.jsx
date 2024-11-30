@@ -1,5 +1,4 @@
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View, Platform } from 'react-native';
-import React, { useState } from 'react';
 import React, { useState, useEffect } from 'react';
 import Container from '../../styles/Container';
 import ProfileImage from '../../assets/KOSU/Profile/pic2.jpg';
@@ -68,7 +67,6 @@ const Profile = () => {
     navigation.dispatch(
       CommonActions.reset({
         index: 0,
-        routes: [{ name: 'LandingPageOne' }],
         routes: [{ name: 'Login' }],
       })
     );
@@ -104,8 +102,6 @@ const Profile = () => {
     <View style={styles.profHead}></View>
     <ScrollView style={styles.wrapper}>
       <View style={styles.container}>
-        <Image source={ProfileImage} style={styles.image} />
-        <Text style={styles.name}>Yoon Jeonghan</Text>
         <Image source={{ uri: imageUri }} style={styles.image} />
         <Text style={styles.name}>{userInfo.name}</Text>
       </View>
@@ -120,22 +116,18 @@ const Profile = () => {
           <Text style={{ fontSize: 18, fontFamily: 'afacad_Bold', color: '#1A47BC' }}>Account Information</Text>
           <View style={styles.accountDetailWrapper}>
             <Text style={styles.detailTitle}>Name</Text>
-            <Text style={styles.detailValue}>Yoon Jeonghan</Text>
             <Text style={styles.detailValue}>{userInfo.name} </Text>
             <View style={styles.horizontalLine} />
             <Text style={styles.detailTitle}>Email Address</Text>
-            <Text style={styles.detailValue}>YoonJeonghan@gmail.com</Text>
             <Text style={styles.detailValue}>{user.email}</Text>
             <View style={styles.horizontalLine} />
             <Text style={styles.detailTitle}>Mobile Number</Text>
-            <Text style={styles.detailValue}>083873594727</Text>
             <Text style={styles.detailValue}>{userInfo.mobilenumber}</Text>
             <View style={styles.horizontalLine} />
             <View style={{ flex: 1, marginRight: 10 }}>
                 <Text style={styles.detailTitle}>Date of Birth</Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center', }}>
                   <Text style={{ fontSize: 16, fontFamily: 'afacad_SemiBold', color: '#1E1E1E', marginTop: 10 }}>
-                    {date.toLocaleDateString()}
                   {userInfo.dateofbirth ? new Date(userInfo.dateofbirth.toDate()).toLocaleDateString() : 'Date not available'}
                   </Text>
                   <TouchableOpacity style={{ paddingLeft: 40, paddingRight: 40 }} onPress={showDatePicker}>
@@ -154,7 +146,6 @@ const Profile = () => {
               </View>
               <View>
                   <Text style={styles.detailTitle}>Gender</Text>
-                  <Text style={styles.detailValue}>Male</Text>
                   <Text style={styles.detailValue}>{userInfo.gender}</Text>
                 <View style={styles.horizontalLine} />
               </View>
@@ -164,19 +155,16 @@ const Profile = () => {
           <Text style={{ fontSize: 18, fontFamily: 'afacad_Bold', color: '#1A47BC' }}>Address Details</Text>
           <View style={styles.accountDetailWrapper2}>
             <Text style={styles.detailTitle}>Street Address</Text>
-            <Text style={styles.detailValue}>Jalur Sutera Barat No.21 Apartemen Pacific Garden</Text>
             <Text style={styles.detailValue}>{userInfo.address}</Text>
             <View style={styles.horizontalLine} />
             <View style={{ flexDirection: 'row' }}>
               <View>
                 <Text style={styles.detailTitle}>City</Text>
-                <Text style={styles.detailValue}>Tangerang Selatan</Text>
                 <Text style={styles.detailValue}>{userInfo.city}</Text>
                 <View style={styles.horizontalLine} />
               </View>
               <View style={{ paddingLeft: 40 }}>
                 <Text style={styles.detailTitle}>Postal Code</Text>
-                <Text style={styles.detailValue}>15314</Text>
                 <Text style={styles.detailValue}>{userInfo.postalcode}</Text>
                 <View style={styles.horizontalLine} />
               </View>
