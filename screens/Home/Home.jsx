@@ -12,6 +12,7 @@ import PopularCategories from './PopularCategories';
 import { db } from '../../dbconfig';
 import { doc, collection, getDocs } from 'firebase/firestore';
 
+
 const Home = () => {
   // const cards = [
   //   { id: '1', name: 'Product 1111', price: 'Rp1000000', category: 'Bags', rating: '4.9', description: 'Lorem Ipsum sir Amet', stock: '13', material: 'leather', sizeChart: 'One size', dimension:'30cm x 45cm x 15cm', condition: 'New', notes: '', variant: ['Regular'], size: ['One Size'], color: ['Red', 'White'] },
@@ -20,6 +21,7 @@ const Home = () => {
   //   { id: '4', name: 'Product 4', price: 'Rp4000000', category: 'Category placeholder', rating: '4.9', description: 'Lorem Ipsum sir Amet', stock: '13', material: 'leather', sizeChart: 'One size', dimension:'30cm x 45cm x 15cm', condition: 'New', notes: '' ,variant: ['Regular'], size: ['One Size'], color: ['Red', 'White'] },
   // ];
   const [cards, setCards] = useState([]);
+
   useEffect(() => {
     const fetchCards = async () => {
       try {
@@ -88,7 +90,6 @@ const Home = () => {
   );
   
 };
-export default Home;
 
 const styles = StyleSheet.create({
   scrollContainer: {
@@ -114,6 +115,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
 });
+
 
 // import { StyleSheet, Text, View, FlatList, ScrollView } from 'react-native'
 // import React, { useState, useEffect } from 'react'
