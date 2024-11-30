@@ -20,6 +20,7 @@ import Rating from './screens/Rating/Rating';
 import Checkout from './screens/Checkout/Checkout';
 import DebitCard from './screens/Checkout/DebitCard';
 import VirtualAccount from './screens/Checkout/VirtualAccount';
+import OrderConfirmation from './screens/Checkout/OrderConfirmation';
 
 const Stack = createNativeStackNavigator();
 
@@ -65,6 +66,11 @@ export default function App() {
         <Stack.Screen 
           name="CardDetail" 
           component={CardDetail}
+          options={{ headerShown: false }} 
+        />
+        <Stack.Screen 
+          name="OrderConfirmation" 
+          component={OrderConfirmation}
           options={{ headerShown: false }} 
         />
         <Stack.Screen

@@ -47,8 +47,6 @@ const Order = () => {
       })}
     </View>
   );
-  
-  
 
   const renderScene = SceneMap({
     packed: OrderPacked,
