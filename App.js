@@ -48,59 +48,6 @@ export default function App() {
   Text.defaultProps.style =  { fontFamily: 'afacad_Medium' }
   
   return (
-    <NavigationContainer style={[styles.textStyle, styles.container]}>
-      <Stack.Navigator>
-        <Stack.Screen
-          name='Bottom Navigation'
-          component={ButtonTabNavigation}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name='Wishlist'
-          component={Wishlist}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen 
-          name="CardDetail" 
-          component={CardDetail}
-          options={{ headerShown: false }} 
-        />
-        <Stack.Screen
-          name='Profile'
-          component={Profile}
-        />
-        <Stack.Screen
-          name='LandingPageOne'
-          component={LandingPageOne}
-          options={{ headerShown: false }} 
-        />
-        <Stack.Screen
-          name='LandingPageTwo'
-          component={LandingPageTwo}
-          options={{ headerShown: false }} 
-        />
-        <Stack.Screen
-          name='Rating'
-          component={Rating}
-          options={{ headerShown: false }} 
-        />
-        <Stack.Screen
-          name='LandingPageThree'
-          component={LandingPageThree}
-          options={{ headerShown: false }} 
-        />
-        <Stack.Screen
-          name='Login'
-          component={Login}
-          options={{ headerShown: false }} 
-        />
-        <Stack.Screen
-          name='Register'
-          component={Register}
-          options={{ headerShown: false }} 
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
     <AuthProvider>
       <NavigationContainer style={[styles.textStyle, styles.container]}>
         <Stack.Navigator initialRouteName='Login'>

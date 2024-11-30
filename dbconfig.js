@@ -19,4 +19,4 @@ const auth = getAuth(app);
 // Initialize Firestore and Storage
 const db = getFirestore(app);
 
-export { db, app };export { db, app, auth };
+export { db, app };export { db, app, auth };export { db, app, auth };

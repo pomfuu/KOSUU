@@ -91,6 +91,8 @@ const Home = () => {
   
 };
 
+//export default Home;
+
 const styles = StyleSheet.create({
   scrollContainer: {
     paddingBottom: 150
