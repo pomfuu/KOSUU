@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 import { storage } from '../config';
-import { ref, getDownloadURL } from 'firebase/storage'; // Import ref and getDownloadURL
+import { ref, getDownloadURL } from 'firebase/storage';
 
 const Card = ({ showHeader, category, name, price, rating, description, stock, material, sizeChart, dimension, condition, notes, variant, size, color, imageURL }) => {
   const navigation = useNavigation();
@@ -19,12 +19,13 @@ const Card = ({ showHeader, category, name, price, rating, description, stock, m
     setIsLiked(!isLiked);
   };
 
-  // Fetch the image URL from Firebase Storage
   useEffect(() => {
     const fetchImage = async () => {
       try {
+
         console.log('Storagee:', storage);
         const imageRef = ref(storage, imageURL); // Replace with your file path in storage
+
         const url = await getDownloadURL(imageRef);
         console.log(url);
         setImageUrl(url);
