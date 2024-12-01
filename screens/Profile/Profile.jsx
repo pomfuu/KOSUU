@@ -1,4 +1,3 @@
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View, Platform } from 'react-native';
 import { KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View, Platform, TextInput } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import Container from '../../styles/Container';
@@ -11,7 +10,6 @@ import HeaderNav from '../../navigation/HeaderNav';
 import { CommonActions, useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../authcontext';
 import { db } from '../../dbconfig';
-import { doc, collection, getDocs, getDoc } from 'firebase/firestore';
 import { doc, collection, getDocs, getDoc, updateDoc } from 'firebase/firestore';
 import { storage } from '../../config';
 import { ref, getDownloadURL } from 'firebase/storage';
@@ -28,7 +26,6 @@ const Profile = () => {
   useEffect(() => {
     const fetchCards = async () => {
       try {
-        // Access the specific document in the "Users" collection using user.uid
         console.log(user.uid);
         const userDoc = doc(db, 'Users', user.uid);
         const docSnapshot = await getDoc(userDoc);
@@ -36,7 +33,6 @@ const Profile = () => {
         if (docSnapshot.exists()) {
           const userData = docSnapshot.data();
           console.log('User data:', userData);
-          setCards([userData]);  // Assuming you want to store this single user's data in 'cards'
           setCards([userData]);  
         } else {
           console.log('No such document!');
@@ -146,7 +142,6 @@ const Profile = () => {
   
   
   return (
-    <View>
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined}
@@ -160,12 +155,6 @@ const Profile = () => {
         <Text style={styles.name}>{userInfo.name}</Text>
       </View>
       <Container>
-        <TouchableOpacity style={styles.editProfile}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-            <Image source={EditIcon} style={{ height: 25, width: 25 }} />
-            <Text style={{ fontSize: 16, fontFamily: 'afacad_Bold', color: '#1E69F2' }}>Edit Personal Information</Text>
-          </View>
-        </TouchableOpacity>
       <TouchableOpacity
         style={styles.editProfile}
         onPress={isEditing ? handleSavePress : handleEditPress}>
@@ -179,7 +168,6 @@ const Profile = () => {
           <Text style={{ fontSize: 18, fontFamily: 'afacad_Bold', color: '#1A47BC' }}>Account Information</Text>
           <View style={styles.accountDetailWrapper}>
             <Text style={styles.detailTitle}>Name</Text>
-            <Text style={styles.detailValue}>{userInfo.name} </Text>
             {isEditing ? (
               <TextInput
                 style={styles.input} 
@@ -197,7 +185,6 @@ const Profile = () => {
 
             {/* untuk phone number */}
             <Text style={styles.detailTitle}>Mobile Number</Text>
-            <Text style={styles.detailValue}>{userInfo.mobilenumber}</Text>
             {isEditing ? (
               <TextInput
                 style={styles.input} 
@@ -215,7 +202,6 @@ const Profile = () => {
                 <Text style={styles.detailTitle}>Date of Birth</Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center', }}>
                   <Text style={{ fontSize: 16, fontFamily: 'afacad_SemiBold', color: '#1E1E1E', marginTop: 10 }}>
-                  {userInfo.dateofbirth ? new Date(userInfo.dateofbirth.toDate()).toLocaleDateString() : 'Date not available'}
                   {userInfo.dateofbirth ? new Date(userInfo.dateofbirth.toDate()).toLocaleDateString() : '01/12/2024'}
                   </Text>
                   <TouchableOpacity style={{ paddingLeft: 40, paddingRight: 40 }} onPress={showDatePicker}>
@@ -242,7 +228,6 @@ const Profile = () => {
         <View>
           <Text style={{ fontSize: 18, fontFamily: 'afacad_Bold', color: '#1A47BC' }}>Address Details</Text>
           <View style={styles.accountDetailWrapper2}>
-            <Text style={styles.detailTitle}>Street Address</Text>
 
             {/* Untuk address */}
           <Text style={styles.detailTitle}>Street Address</Text>
@@ -262,7 +247,6 @@ const Profile = () => {
               {/* Untuk city */}
               <View>
                 <Text style={styles.detailTitle}>City</Text>
-                <Text style={styles.detailValue}>{userInfo.city}</Text>
                 {isEditing ? (
                   <TextInput
                     style={styles.input}
@@ -275,7 +259,6 @@ const Profile = () => {
                 )}
                 <View style={styles.horizontalLine} />
               </View>
-              <View style={{ paddingLeft: 40 }}>
 
               {/* Untuk postal code */}
               <View style={{ paddingLeft: 40 }}> 
@@ -309,7 +292,6 @@ const Profile = () => {
         </View>
       </Container>
     </ScrollView>
-
     </View>
     
     </KeyboardAvoidingView>

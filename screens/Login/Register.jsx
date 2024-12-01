@@ -70,7 +70,6 @@ const Register = () => {
         <TextInput
             style={styles.inputUsername} 
             placeholder="Username" 
-            placeholderTextColor="#1A47BC" />
             placeholderTextColor="#1A47BC"
             value={username}
             onChangeText={(text) => setUsername(text)}
@@ -78,7 +77,6 @@ const Register = () => {
         <TextInput
             style={styles.inputUsername} 
             placeholder="Email" 
-            placeholderTextColor="#1A47BC" />
             placeholderTextColor="#1A47BC"
             value={email}
             onChangeText={(text) => setEmail(text)}
@@ -88,7 +86,6 @@ const Register = () => {
           placeholder="Password"
           placeholderTextColor="#1A47BC"
           secureTextEntry={!isPasswordVisible} 
-        />
           value={password}
           onChangeText={(text) => setPassword(text)}
           />
@@ -121,7 +118,6 @@ const Register = () => {
             color="#1A47BC"
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={handleClick}>
         <TouchableOpacity onPress={handleRegister}>
         <View style={styles.button}>
           <Text style={styles.buttonText}>Register</Text>
