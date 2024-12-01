@@ -17,10 +17,13 @@ import LandingPageThree from './screens/Login/LandingPageThree';
 import Login from './screens/Login/Login';
 import Register from './screens/Login/Register';
 import Rating from './screens/Rating/Rating';
+
+import { AuthProvider } from './authcontext';
 import Checkout from './screens/Checkout/Checkout';
 import DebitCard from './screens/Checkout/DebitCard';
 import VirtualAccount from './screens/Checkout/VirtualAccount';
 import OrderConfirmation from './screens/Checkout/OrderConfirmation';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -51,79 +54,62 @@ export default function App() {
   Text.defaultProps.style =  { fontFamily: 'afacad_Medium' }
   
   return (
-    <NavigationContainer style={[styles.textStyle, styles.container]}>
-      <Stack.Navigator>
-        <Stack.Screen
-          name='Bottom Navigation'
-          component={ButtonTabNavigation}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name='Wishlist'
-          component={Wishlist}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen 
-          name="CardDetail" 
-          component={CardDetail}
-          options={{ headerShown: false }} 
-        />
-        <Stack.Screen 
-          name="OrderConfirmation" 
-          component={OrderConfirmation}
-          options={{ headerShown: false }} 
-        />
-        <Stack.Screen
-          name='Profile'
-          component={Profile}
-        />
-        <Stack.Screen
-          name='Checkout'
-          component={Checkout}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name='DebitCard'
-          component={DebitCard}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name='VirtualAccount'
-          component={VirtualAccount}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name='LandingPageOne'
-          component={LandingPageOne}
-          options={{ headerShown: false }} 
-        />
-        <Stack.Screen
-          name='LandingPageTwo'
-          component={LandingPageTwo}
-          options={{ headerShown: false }} 
-        />
-        <Stack.Screen
-          name='Rating'
-          component={Rating}
-          options={{ headerShown: false }} 
-        />
-        <Stack.Screen
-          name='LandingPageThree'
-          component={LandingPageThree}
-          options={{ headerShown: false }} 
-        />
-        <Stack.Screen
-          name='Login'
-          component={Login}
-          options={{ headerShown: false }} 
-        />
-        <Stack.Screen
-          name='Register'
-          component={Register}
-          options={{ headerShown: false }} 
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+
+    <AuthProvider>
+      <NavigationContainer style={[styles.textStyle, styles.container]}>
+        <Stack.Navigator initialRouteName='Login'>
+          <Stack.Screen
+            name='Bottom Navigation'
+            component={ButtonTabNavigation}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name='Wishlist'
+            component={Wishlist}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen 
+            name="CardDetail" 
+            component={CardDetail}
+            options={{ headerShown: false }} 
+          />
+          <Stack.Screen
+            name='Profile'
+            component={Profile}
+          />
+          <Stack.Screen
+            name='LandingPageOne'
+            component={LandingPageOne}
+            options={{ headerShown: false }} 
+          />
+          <Stack.Screen
+            name='LandingPageTwo'
+            component={LandingPageTwo}
+            options={{ headerShown: false }} 
+          />
+          <Stack.Screen
+            name='Rating'
+            component={Rating}
+            options={{ headerShown: false }} 
+          />
+          <Stack.Screen
+            name='LandingPageThree'
+            component={LandingPageThree}
+            options={{ headerShown: false }} 
+          />
+          <Stack.Screen
+            name='Login'
+            component={Login}
+            options={{ headerShown: false }} 
+          />
+          <Stack.Screen
+            name='Register'
+            component={Register}
+            options={{ headerShown: false }} 
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </AuthProvider>
   );
 }
 

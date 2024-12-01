@@ -5,14 +5,47 @@ import LoginIcon from '../../assets/KOSU/LoginIcon.svg'
 import { TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
+import { auth } from '../../authconfig';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useAuth } from '../../authcontext';
 
 const Login = () => {
   const [isPasswordVisible, setPasswordVisible] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const { login } = useAuth();
 
   const navigation = useNavigation();
 
-  const handleClick = () => {
-    navigation.navigate('Bottom Navigation');
+  const handleClick = async() => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // await signInWithEmailAndPassword(auth, email, password);
+      // navigation.navigate('Profile', {
+      //   uid: user.uid,  
+      //   email: user.email, 
+      // });
+      login(user.uid, user.email); 
+
+      // Navigate to the Home screen
+      navigation.navigate('Bottom Navigation');
+    } catch (err) {
+      console.log(err.message);
+
+      if (err.message.includes('invalid-email')) {
+        alert('Invalid email address, please insert the proper email address.');
+      }
+      else if (err.message.includes('missing-password')) {
+        alert('Please insert the password.');
+      }
+       else if (err.message.includes('invalid-credential')) {
+        alert('Incorrect email and passsword combination.');
+      } else {
+        alert('An error occurred. Please try again.');
+      }
+    } 
   };
 
   const handleRegist = () => {
@@ -27,12 +60,17 @@ const Login = () => {
         <TextInput
             style={styles.inputUsername} 
             placeholder="Email" 
-            placeholderTextColor="#1A47BC" />
+            placeholderTextColor="#1A47BC" 
+            value={email}
+            onChangeText={setEmail}
+            />
         <TextInput
           style={styles.inputPassword}
           placeholder="Password"
           placeholderTextColor="#1A47BC"
           secureTextEntry={!isPasswordVisible} 
+          value={password}
+          onChangeText={setPassword}
         />
         <TouchableOpacity
           style={styles.eyeToggle}
