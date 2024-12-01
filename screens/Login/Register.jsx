@@ -5,12 +5,54 @@ import RegistIcon from '../../assets/KOSU/RegisterIcon2.svg'
 import { TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import {db} from '../../dbconfig';
+import { getFirestore, doc, setDoc } from "firebase/firestore";
 
 const Register = () => {
   const [isPasswordVisible, setPasswordVisible] = useState(false);
   const [isConfirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [username, setUsername] = useState('');
 
   const navigation = useNavigation();
+
+  const handleRegister = async () => {
+    if (password !== confirmPassword) {
+      alert('Passwords do not match!');
+      return;
+    }
+
+    try {
+      const auth = getAuth();
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const uid = userCredential.user.uid;
+
+      const userData = {
+        name: username,
+        ProfileImage: "gs://teskosudulu.firebasestorage.app/istockphoto-517998264-612x612.jpg", // Gambar default untuk di awal, ga ada gambar
+        address: "",
+        city: "",
+        dateofbirth:"",
+        gender: "",
+        mobilenumber:"",
+        postalcode:""
+      };
+      
+      await setDoc(doc(db, "Users", uid), userData);
+
+      console.log('User registered:', userCredential.user);
+      alert('Registration successful!');
+
+      navigation.navigate('Login');
+    } catch (error) {
+      console.error('Error registering user:', error.message);
+      alert(error.message);
+    }
+  };
+
 
   const handleClick = () => {
     navigation.navigate('Bottom Navigation');
@@ -29,21 +71,35 @@ const Register = () => {
             style={styles.inputUsername} 
             placeholder="Username" 
             placeholderTextColor="#1A47BC" />
+            placeholderTextColor="#1A47BC"
+            value={username}
+            onChangeText={(text) => setUsername(text)}
+            />
         <TextInput
             style={styles.inputUsername} 
             placeholder="Email" 
             placeholderTextColor="#1A47BC" />
+            placeholderTextColor="#1A47BC"
+            value={email}
+            onChangeText={(text) => setEmail(text)}
+            />
         <TextInput
           style={styles.inputPassword}
           placeholder="Password"
           placeholderTextColor="#1A47BC"
           secureTextEntry={!isPasswordVisible} 
         />
+          value={password}
+          onChangeText={(text) => setPassword(text)}
+          />
+        
         <TextInput
           style={styles.inputPassword}
           placeholder="Confirm Password"
           placeholderTextColor="#1A47BC"
           secureTextEntry={!isConfirmPasswordVisible} 
+          value={confirmPassword}
+          onChangeText={(text) => setConfirmPassword(text)}
         />
         <TouchableOpacity
           style={styles.eyeToggle}
@@ -66,6 +122,7 @@ const Register = () => {
           />
         </TouchableOpacity>
         <TouchableOpacity onPress={handleClick}>
+        <TouchableOpacity onPress={handleRegister}>
         <View style={styles.button}>
           <Text style={styles.buttonText}>Register</Text>
         </View>
