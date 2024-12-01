@@ -1,9 +1,15 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import CartAdded from './Modal/CartAdded';
+import { useNavigation } from '@react-navigation/native';
 
 const CartButton = () => {
     const [modal, setModal] = useState(false);
+    const navigation = useNavigation();
+
+    const handleCheckout = () =>{
+        navigation.navigate('Checkout')
+    }
 
     const handleAddtoCart = () =>{
       setModal(true)
@@ -16,7 +22,7 @@ const CartButton = () => {
         </TouchableOpacity> 
         <CartAdded modal={modal} setModal={setModal}/>
 
-        <TouchableOpacity style={styles.button2}>
+        <TouchableOpacity onPress={handleCheckout} style={styles.button2}>
             <Text style={styles.buttonText2} animationType="fade">Checkout</Text>
         </TouchableOpacity>
         </View>

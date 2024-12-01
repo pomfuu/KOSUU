@@ -17,7 +17,13 @@ import LandingPageThree from './screens/Login/LandingPageThree';
 import Login from './screens/Login/Login';
 import Register from './screens/Login/Register';
 import Rating from './screens/Rating/Rating';
+
 import { AuthProvider } from './authcontext';
+import Checkout from './screens/Checkout/Checkout';
+import DebitCard from './screens/Checkout/DebitCard';
+import VirtualAccount from './screens/Checkout/VirtualAccount';
+import OrderConfirmation from './screens/Checkout/OrderConfirmation';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -48,6 +54,7 @@ export default function App() {
   Text.defaultProps.style =  { fontFamily: 'afacad_Medium' }
   
   return (
+
     <AuthProvider>
       <NavigationContainer style={[styles.textStyle, styles.container]}>
         <Stack.Navigator initialRouteName='Login'>
