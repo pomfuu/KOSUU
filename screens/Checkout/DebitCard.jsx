@@ -40,7 +40,6 @@ const DebitCard = () => {
   };
 
   useEffect(() => {
-    // Check if all required fields are filled
     if (cardNum && expiryDate && cvc && name && email) {
       setIsFormComplete(true);
     } else {
