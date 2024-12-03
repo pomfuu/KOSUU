@@ -5,11 +5,28 @@ import { useNavigation } from '@react-navigation/native';
 import { storage } from '../config';
 import { ref, getDownloadURL } from 'firebase/storage';
 
-const Card = ({ showHeader, category, name, price, rating, description, stock, material, sizeChart, dimension, condition, notes, variant, size, color, imageURL }) => {
+const Card = ({ id, showHeader, category, name, price, rating, description, stock, material, sizeChart, dimension, condition, notes, variant, size, color, imageURL }) => {
   const navigation = useNavigation();
   
   const handleCardPressed = () => {
-    navigation.navigate('CardDetail', { name, category, price, image: imageUrl, rating, description, stock, material, sizeChart, dimension, condition, notes, variant, size, color });
+    navigation.navigate('CardDetail', { 
+      id,
+      name, 
+      category, 
+      price, 
+      image: imageUrl, 
+      rating, 
+      description, 
+      stock, 
+      material, 
+      sizeChart, 
+      dimension, 
+      condition, 
+      notes, 
+      variant, 
+      size, 
+      color 
+    });
   };
   
   const [isLiked, setIsLiked] = useState(false);
@@ -24,7 +41,7 @@ const Card = ({ showHeader, category, name, price, rating, description, stock, m
       try {
 
         console.log('Storagee:', storage);
-        const imageRef = ref(storage, imageURL); // Replace with your file path in storage
+        const imageRef = ref(storage, imageURL); 
 
         const url = await getDownloadURL(imageRef);
         console.log(url);

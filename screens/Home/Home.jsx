@@ -14,37 +14,50 @@ import { doc, collection, getDocs } from 'firebase/firestore';
 
 const Home = () => {
   const [cards, setCards] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
-  useEffect(() => {
-    const fetchCards = async () => {
-      try {
-        const cardsCollection = collection(db, 'Products');
-        const snapshot = await getDocs(cardsCollection);
-        const cardList = snapshot.docs.map(doc => ({
+  const fetchProducts = async (searchTerm = '') => {
+    try {
+      const cardsCollection = collection(db, 'Products');
+      const snapshot = await getDocs(cardsCollection);
+
+      // Untuk feature search, tapi harusnya nanti masih dilanjutin lagi seandainya jadi page terpisah
+      const cardList = snapshot.docs
+        .map(doc => ({
           id: doc.id,
           ...doc.data(),
-        }));
-        setCards(cardList);
-      } catch (error) {
-        console.error('Error fetching cards:', error);
-      }
-    };
-    fetchCards();
-  }, []);
+        }))
+        .filter(card => {
+          if (searchTerm === '') return true; 
+          return card.name.toLowerCase().includes(searchTerm.toLowerCase()); //Cari search berdasarkan name
+        });
+
+      setCards(cardList);
+    } catch (error) {
+      console.error('Error fetching cards:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts(searchTerm);
+  }, [searchTerm]);
+
+  const handleSearchChange  = (searchText) => {
+    setSearchTerm(searchText);
+  };
 
   const renderCard = ({ item }) => {
     return (
       <View style={styles.cardWrapper}>
-        <Card {...item} />
+        <Card {...item} id={item.id}/>
       </View>
     );
-    
   };
   return (
     
     <Container>
       <SafeAreaView>
-        <SearchBar/>
+        <SearchBar onSearchChange={handleSearchChange}/>
         <ScrollView 
           showsVerticalScrollIndicator={false} 
           showsHorizontalScrollIndicator={false}
