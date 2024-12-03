@@ -17,7 +17,7 @@ const Cart = () => {
 
   const fetchCartItems = async (userId) => {
     try {
-      // Reference to the user's cart subcollection-
+      // Nyari data Cart dari user yg sekarang log in
       const cartRef = collection(db, 'Users', userId, 'Cart');
       const q = query(cartRef); 
       const querySnapshot = await getDocs(q);
