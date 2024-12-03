@@ -17,13 +17,11 @@ import LandingPageThree from './screens/Login/LandingPageThree';
 import Login from './screens/Login/Login';
 import Register from './screens/Login/Register';
 import Rating from './screens/Rating/Rating';
-
 import { AuthProvider } from './authcontext';
 import Checkout from './screens/Checkout/Checkout';
 import DebitCard from './screens/Checkout/DebitCard';
 import VirtualAccount from './screens/Checkout/VirtualAccount';
 import OrderConfirmation from './screens/Checkout/OrderConfirmation';
-
 
 const Stack = createNativeStackNavigator();
 
@@ -57,7 +55,7 @@ export default function App() {
 
     <AuthProvider>
       <NavigationContainer style={[styles.textStyle, styles.container]}>
-        <Stack.Navigator initialRouteName='Login'>
+        <Stack.Navigator>
           <Stack.Screen
             name='Bottom Navigation'
             component={ButtonTabNavigation}
@@ -66,6 +64,26 @@ export default function App() {
           <Stack.Screen
             name='Wishlist'
             component={Wishlist}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name='Checkout'
+            component={Checkout}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name='VirtualAccount'
+            component={VirtualAccount}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name='DebitCard'
+            component={DebitCard}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name='OrderConfirmation'
+            component={OrderConfirmation}
             options={{ headerShown: false }}
           />
           <Stack.Screen 
