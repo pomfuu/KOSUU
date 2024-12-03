@@ -1,42 +1,34 @@
-import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
-import OrderImage from '../../assets/KOSU/Card1.png'; 
+import React from 'react';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 
-const CartCard = ({ onDelete }) => {
-  const [isChecked, setIsChecked] = useState(false);
-
+const CartCard = ({ product, isSelected, onToggleSelect, onDelete }) => {
   return (
     <View style={styles.card}>
       <Text style={styles.store}>Store Name</Text>
-      <View style={{ flexDirection: 'row', marginTop: 10, gap: 10 }}>
+      <View style={styles.row}>
         <CheckBox
-          checked={isChecked}
-          onPress={() => setIsChecked(!isChecked)}
+          checked={isSelected}
+          onPress={onToggleSelect}
           checkedColor="#1A47BC"
           uncheckedColor="#8E8E8D"
-          containerStyle={{ padding: 0, margin: 0, backgroundColor: 'transparent' }}
+          containerStyle={styles.checkbox}
         />
-        <Image source={OrderImage} style={styles.image} />
-        <View style={{ position: 'relative', flex: 1 }}>
-          <View>
-            <Text style={{ fontSize: 16, fontFamily: 'afacad_Medium' }}>Klee Dodoco Named</Text>
-            <Text style={{ fontSize: 16, fontFamily: 'afacad_Medium', color: '#8E8E8D', marginTop: 5 }}>
-              Size : One Size
-            </Text>
-            <Text style={{ fontSize: 16, fontFamily: 'afacad_Medium', color: '#8E8E8D' }}>
-              Color : One Color
-            </Text>
-            <Text style={{ fontSize: 18, fontFamily: 'afacad_Bold', color: '#1A47BC', marginTop: 10 }}>
-              Rp259.000
-            </Text>
-          </View>
+        <Image source={{ uri: product.productImage }} style={styles.image} />
+        <View style={styles.details}>
+          <Text style={styles.name}>{product.productName}</Text>
+          {product.selectedSize && <Text style={styles.info}>Size: {product.selectedSize}</Text>}
+          {product.selectedColor && <Text style={styles.info}>Color: {product.selectedColor}</Text>}
+          <Text style={{ marginTop: 5, fontFamily: 'afacad_Medium' }}>
+            Qty: {product.quantity}
+          </Text>
+          <Text style={styles.price}>
+            Subtotal Rp{Number(product.productPrice * product.quantity).toLocaleString()}
+          </Text>
         </View>
-          <TouchableOpacity
-            style={styles.deleteButton}
-            onPress={onDelete}>
-            <Text style={styles.deleteText}>-</Text>
-          </TouchableOpacity>
+        <TouchableOpacity style={styles.deleteButton} onPress={onDelete}>
+          <Text style={styles.deleteText}>-</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -45,11 +37,14 @@ const CartCard = ({ onDelete }) => {
 export default CartCard;
 
 const styles = StyleSheet.create({
-  image: {
-    width: 120, 
-    height: 120,
-    borderRadius: 10,
-    resizeMode: 'contain', 
+  card: {
+    marginTop: 5,
+    marginBottom: 10,
+  },
+  row: {
+    flexDirection: 'row',
+    gap: 10,
+    marginTop: 10,
   },
   store: {
     fontFamily: 'afacad_Medium',
@@ -57,11 +52,39 @@ const styles = StyleSheet.create({
     fontSize: 16,
     padding: 10,
     backgroundColor: '#1A47BC',
-    width: '35%',
-    borderRadius: 10,
-    borderColor: 'none',
     color: '#FBFAF5',
-    marginTop: 10
+    borderRadius: 10,
+    width: '35%',
+  },
+  checkbox: {
+    padding: 0,
+    margin: 0,
+    backgroundColor: 'transparent',
+  },
+  image: {
+    width: 120,
+    height: 120,
+    borderRadius: 10,
+    resizeMode: 'contain',
+  },
+  details: {
+    flex: 1,
+  },
+  name: {
+    fontSize: 16,
+    fontFamily: 'afacad_Medium',
+  },
+  info: {
+    fontSize: 16,
+    fontFamily: 'afacad_Medium',
+    color: '#8E8E8D',
+    marginTop: 5,
+  },
+  price: {
+    fontSize: 18,
+    fontFamily: 'afacad_Bold',
+    color: '#1A47BC',
+    marginTop: 10,
   },
   deleteButton: {
     alignSelf: 'flex-end',
@@ -76,4 +99,4 @@ const styles = StyleSheet.create({
     color: '#FFFFFC',
     fontSize: 18,
   },
-})
+});
