@@ -34,7 +34,7 @@ const Cart = () => {
     }
   };
 
-  // Function ini cuman dipake, buat user yang baru pertama kali masukin barang ke shopping cart atau kalau shopping cartnya masih kosong
+  // Function ini cuman dipake, buat user yang baru pertama kali masukin barang ke shopping cart atau kalau shopping cartnya masih kosong!
   const subscribeToCartItems  = (userId) => {
     const cartRef = collection(db, 'Users', userId, 'Cart');
     const q = query(cartRef);
@@ -52,7 +52,6 @@ const Cart = () => {
     if (user) {
       fetchCartItems(user.uid);
       const unsubscribe = subscribeToCartItems(user.uid); 
-
       
       return () => unsubscribe(); // Unsubscribe untuk stop update data setelah data cart ditampilin
     }
