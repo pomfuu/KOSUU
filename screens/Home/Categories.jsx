@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
+    marginBottom: 0,
     marginRight: 3,
     backgroundColor: '#1A47BC',
     borderRadius: 5,
@@ -54,7 +55,8 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#FBFAF5',
-    fontSize: 12,
+    fontFamily:'afacad_Medium',
+    fontSize: 14,
   },
   textHeader:{
     color: '#1A47BC',

@@ -1,31 +1,89 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
-import React from 'react'
-import CardImage from '../assets/KOSU/Card1.png'; // Import PNG image correctly
-import Icon from 'react-native-vector-icons/FontAwesome'; // Import vector icons
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { useNavigation } from '@react-navigation/native';
+import { storage } from '../config';
+import { ref, getDownloadURL } from 'firebase/storage';
 
-const Card = () => {
+const Card = ({ id, showHeader, category, name, price, rating, description, stock, material, sizeChart, dimension, condition, notes, variant, size, color, imageURL }) => {
+  const navigation = useNavigation();
+  
+  const handleCardPressed = () => {
+    navigation.navigate('CardDetail', { 
+      id,
+      name, 
+      category, 
+      price, 
+      image: imageUrl, 
+      rating, 
+      description, 
+      stock, 
+      material, 
+      sizeChart, 
+      dimension, 
+      condition, 
+      notes, 
+      variant, 
+      size, 
+      color 
+    });
+  };
+  
+  const [isLiked, setIsLiked] = useState(false);
+  const [imageUrl, setImageUrl] = useState(null);
+
+  const toggleWishlist = () => {
+    setIsLiked(!isLiked);
+  };
+
+  useEffect(() => {
+    const fetchImage = async () => {
+      try {
+
+        console.log('Storagee:', storage);
+        const imageRef = ref(storage, imageURL); 
+
+        const url = await getDownloadURL(imageRef);
+        console.log(url);
+        setImageUrl(url);
+      } catch (error) {
+        console.error("Error fetching image from Firebase:", error);
+      }
+    };
+    fetchImage();
+  }, []);
+
   return (
     <View>
-      <Text style={styles.textHeader}>Popular items</Text>
-      <View style={styles.card}>
+      {showHeader && <Text style={styles.textHeader}>Popular items</Text>}
+      
+      <TouchableOpacity style={styles.card} onPress={handleCardPressed}>
         <View style={styles.imageWrapper}>
-          <Image source={CardImage} style={styles.image} />
-          <TouchableOpacity style={styles.wishlistButton}>
-            <Icon name="heart-o" size={20} color="#EC2A00" />
+          {imageUrl ? (
+            <Image source={{ uri: imageUrl }} style={styles.image} />
+          ) : (
+            <Text>Loading...</Text>
+          )}
+          <TouchableOpacity style={styles.wishlistButton} onPress={toggleWishlist}>
+            <Icon 
+              name={isLiked ? "heart" : "heart-o"} 
+              size={20} 
+              color="#EC2A00" 
+            />
           </TouchableOpacity>
         </View>
-        
-        <View style={styles.details}>
-          <Text style={styles.description}>Product Category</Text>
-          <Text style={styles.productName}>Product Name Placeholder</Text>
-          <Text style={styles.price}>Rp1000000</Text>
-        </View>
-      </View>
-    </View>
-  )
-}
 
-export default Card
+        <View style={styles.details}>
+          <Text style={styles.description}>{category}</Text>
+          <Text style={styles.productName}>{name}</Text>
+          <Text style={styles.price}>Rp. {price}</Text>
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+export default Card;
 
 const styles = StyleSheet.create({
   card: {
@@ -50,7 +108,7 @@ const styles = StyleSheet.create({
     right: 10,
     backgroundColor: '#FBFAF5',
     borderRadius: 50,
-    padding: 10,
+    padding: 8,
   },
   details: {
     padding: 10,
@@ -73,8 +131,9 @@ const styles = StyleSheet.create({
   },
   textHeader: {
     color: '#1A47BC',
-    fontSize: 16, 
+    fontSize: 16,
     fontFamily: 'afacad_Bold',
     marginTop: 10,
+    marginBottom: 10,
   }
-})
+});

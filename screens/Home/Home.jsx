@@ -1,38 +1,125 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View, FlatList, ScrollView } from 'react-native'
+import React, { useState, useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import LandingLogo from '../../assets/KOSU/landingPageLogo.svg';
 import Container from '../../styles/Container';
-import styles from './home.style';
 import Carousel from './Carousel';
-import { ScrollView } from 'react-native';
 import SearchBar from '../../components/SearchBar';
 import Categories from './Categories';
 import Card from '../../components/Card';
+import Tes from '../../components/Tes';
+import PopularCategories from './PopularCategories';
+import { db } from '../../dbconfig';
+import { doc, collection, getDocs } from 'firebase/firestore';
+
 
 const Home = () => {
+  const [cards, setCards] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const fetchProducts = async (searchTerm = '') => {
+    try {
+      const cardsCollection = collection(db, 'Products');
+      const snapshot = await getDocs(cardsCollection);
+
+      // Untuk feature search, tapi harusnya nanti masih dilanjutin lagi seandainya jadi page terpisah
+      const cardList = snapshot.docs
+        .map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+        }))
+        .filter(card => {
+          if (searchTerm === '') return true; 
+          return card.name.toLowerCase().includes(searchTerm.toLowerCase()); //Cari search berdasarkan name
+        });
+
+      setCards(cardList);
+    } catch (error) {
+      console.error('Error fetching cards:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts(searchTerm);
+  }, [searchTerm]);
+
+  const handleSearchChange  = (searchText) => {
+    setSearchTerm(searchText);
+  };
+
+  const renderCard = ({ item }) => {
+    return (
+      <View style={styles.cardWrapper}>
+        <Card {...item} id={item.id}/>
+      </View>
+    );
+  };
   return (
+    
     <Container>
       <SafeAreaView>
-        <SearchBar />
-        <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false}>
-          <View style={styless.carouselWrapper}>
+        <SearchBar onSearchChange={handleSearchChange}/>
+        <ScrollView 
+          showsVerticalScrollIndicator={false} 
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.scrollContainer}>
+          <View style={styles.carouselWrapper}>
             <Carousel />
             <Categories />
-            <Card />
+            <Text style={styles.textHeader}>Popular items</Text>
+            <View>
+              <FlatList
+                data={cards}
+                renderItem={renderCard}
+                keyExtractor={item => item.id}
+                numColumns={2}
+                columnWrapperStyle={styles.row}
+                scrollEnabled={false}
+              />
+            </View>
+            <PopularCategories/>
+            <Text style={styles.textHeader}>Explore more items</Text>
+            <View>
+              <FlatList
+                data={cards}
+                renderItem={renderCard}
+                keyExtractor={item => item.id}
+                numColumns={2}
+                columnWrapperStyle={styles.row}
+                scrollEnabled={false}
+              />
+            </View>
           </View>
         </ScrollView>
       </SafeAreaView>
     </Container>
+    
   );
+  
 };
 
 export default Home;
 
-const styless = StyleSheet.create({
+const styles = StyleSheet.create({
+  scrollContainer: {
+    paddingBottom: 150
+  },
   carouselWrapper: {
     flex: 1,
     marginTop: 0,
     paddingTop: 0,
+  },
+  row: {
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+  cardWrapper: {
+    flex: 1,
+  },
+  textHeader: {
+    color: '#1A47BC',
+    fontSize: 16, 
+    fontFamily: 'afacad_Bold',
+    marginTop: 10,
+    marginBottom: 5,
   },
 });
