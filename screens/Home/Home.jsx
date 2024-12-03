@@ -50,7 +50,7 @@ const Home = () => {
   const renderCard = ({ item }) => {
     return (
       <View style={styles.cardWrapper}>
-        <Card {...item} />
+        <Card {...item} id={item.id}/>
       </View>
     );
   };

@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import CartAdded from './Modal/CartAdded';
 import { useNavigation } from '@react-navigation/native';
 
-const CartButton = () => {
+const CartButton = ({ productId, productName, productImage, productPrice, selectedVariant, selectedSize, selectedColor, userId }) => {
     const [modal, setModal] = useState(false);
     const navigation = useNavigation();
 
@@ -11,9 +11,22 @@ const CartButton = () => {
         navigation.navigate('Checkout')
     }
 
-    const handleAddtoCart = () =>{
-      setModal(true)
-    }
+    // const handleAddtoCart = () =>{
+    //   setModal(true)
+    // }
+
+    const handleAddtoCart = () => {
+        // Log the product details to the console
+        console.log('Product ID:', productId);
+        console.log('Variant:', selectedVariant !== null ? selectedVariant : 'None');
+        console.log('Size:', selectedSize !== null ? selectedSize : 'None');
+        console.log('Color:', selectedColor !== null ? selectedColor : 'None');
+        console.log('Image URL:', productImage);
+        console.log('Price:', productPrice);
+        console.log('User ID:', userId);
+    
+        setModal(true);
+      };
 
     return (
         <View style={{ marginVertical: 15, backgroundColor: '#FBFAF5', paddingHorizontal: 20, paddingVertical: 10, }}>
