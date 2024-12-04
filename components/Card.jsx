@@ -4,10 +4,14 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 import { storage } from '../config';
 import { ref, getDownloadURL } from 'firebase/storage';
+import { db } from '../dbconfig';
+import { doc, getDoc, query, getDocs, setDoc, collection, addDoc, where, deleteDoc } from 'firebase/firestore';
+import { useAuth } from '../authcontext';
 
 const Card = ({ id, showHeader, category, name, price, rating, description, stock, material, sizeChart, dimension, condition, notes, variant, size, color, imageURL }) => {
   const navigation = useNavigation();
-  
+  const { user } = useAuth();
+
   const handleCardPressed = () => {
     navigation.navigate('CardDetail', { 
       id,
@@ -32,19 +36,47 @@ const Card = ({ id, showHeader, category, name, price, rating, description, stoc
   const [isLiked, setIsLiked] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
 
-  const toggleWishlist = () => {
-    setIsLiked(!isLiked);
+  const toggleWishlist = async () => {
+
+    try {
+      //Cari subcollection Wishlist dari Users
+      const wishlistRef = collection(doc(db, 'Users', user.uid), 'Wishlist');
+  
+      //Tambahin ke variabel itemDetails dulu untuk barang yang mau di wishlist
+      const newWishlistItem = {
+        productID: id,
+        productName: name,
+        productImage: imageUrl,
+        productPrice: price,
+      };
+  
+      // Cek dulu udah di wishlist apa belom
+      const existingItemQuery = query(wishlistRef, where('productID', '==', id));
+      const existingItemsSnapshot = await getDocs(existingItemQuery);
+  
+      const existingItem = existingItemsSnapshot.docs.find(doc => doc.data().productID === id);
+      
+      if (!existingItemsSnapshot.empty) {
+        console.log('Item already in wishlist. Removing it.');
+        const itemDoc = existingItemsSnapshot.docs[0];
+        await deleteDoc(itemDoc.ref);
+        setIsLiked(false);
+      } else {
+        await addDoc(wishlistRef, newWishlistItem);
+        setIsLiked(true);
+        console.log('Item added to wishlist');
+      }
+    } catch (error) {
+      console.error('Error adding item to wishlist:', error);
+    }
+
   };
 
   useEffect(() => {
     const fetchImage = async () => {
       try {
-
-        console.log('Storagee:', storage);
         const imageRef = ref(storage, imageURL); 
-
         const url = await getDownloadURL(imageRef);
-        console.log(url);
         setImageUrl(url);
       } catch (error) {
         console.error("Error fetching image from Firebase:", error);
@@ -52,6 +84,30 @@ const Card = ({ id, showHeader, category, name, price, rating, description, stoc
     };
     fetchImage();
   }, []);
+
+  //Next
+  useEffect(() => {
+    if (!user) return; //kalau ternyata error user belom login, batal
+
+    const checkWishlist = async () => {
+      try {
+        const wishlistRef = collection(doc(db, 'Users', user.uid), 'Wishlist');
+        const existingItemQuery = query(wishlistRef, where('productID', '==', id));
+        const existingItemsSnapshot = await getDocs(existingItemQuery);
+
+        // Kalau product ada di database wishlist, tombol wishlistnya jadi true
+        if (!existingItemsSnapshot.empty) {
+          setIsLiked(true);
+        } else {
+          setIsLiked(false);
+        }
+      } catch (error) {
+        console.error('Error checking wishlist:', error);
+      }
+    };
+
+    checkWishlist();
+  }, [user, id]);
 
   return (
     <View>
