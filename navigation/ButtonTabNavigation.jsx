@@ -66,6 +66,7 @@ const ButtonTabNavigation = () => {
           name={name}
           component={{ Home, Wishlist, Order, Cart, Profile }[name]}
           options={{
+            tabBarStyle: name === 'Cart' ? { display: 'none' } : screenOptions.tabBarStyle,
             tabBarIcon: ({ focused }) => renderTabIcon(defaultIcon, focusedIcon, label, focused)
           }}
         />
