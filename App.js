@@ -55,7 +55,7 @@ export default function App() {
 
     <AuthProvider>
       <NavigationContainer style={[styles.textStyle, styles.container]}>
-        <Stack.Navigator initialRouteName='Login'>
+        <Stack.Navigator>
           <Stack.Screen
             name='Bottom Navigation'
             component={ButtonTabNavigation}
