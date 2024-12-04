@@ -229,6 +229,7 @@ const CardDetail = () => {
       width: '30%',
       textAlign: 'center',
       padding: 7,
+      marginTop: 5,
       borderRadius: 5,
     }
   });

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { SearchBar as RNE_SearchBar } from 'react-native-elements';
-import { Text, View } from 'react-native';
+import { View, Keyboard } from 'react-native';
 import { Icon } from 'react-native-elements';
+import { useNavigation } from '@react-navigation/native';
 
-const CustomSearchBar = ({onSearchChange }) => {
+const CustomSearchBar = ({ onSearchChange }) => {
   const [search, setSearch] = useState('');
+  const navigation = useNavigation();
 
   const updateSearch = (search) => {
     setSearch(search);
@@ -12,23 +14,28 @@ const CustomSearchBar = ({onSearchChange }) => {
 
   const handleSearch = () => {
     if (onSearchChange) {
-      onSearchChange(search || ''); // Kalau search kosong, tampilin semua kartu nantinya
+      onSearchChange(search || '');
     }
   };
 
-  return (   
+  const handleTap = () => {
+    Keyboard.dismiss();
+    navigation.navigate('SearchList', { query: search });
+  };
+
+  return (
     <View>
       <RNE_SearchBar
         placeholder="Search any cosplay product"
         onChangeText={updateSearch}
         value={search}
         clearIcon={
-          <Icon 
-            name="close" 
-            type="material" 
-            color="#1A47BC" 
-            onPress={() => { 
-              setSearch(''); // Clear local search state
+          <Icon
+            name="close"
+            type="material"
+            color="#1A47BC"
+            onPress={() => {
+              setSearch('');
               onSearchChange('');
             }}
           />
@@ -56,8 +63,9 @@ const CustomSearchBar = ({onSearchChange }) => {
           paddingRight: 10,
         }}
         onSubmitEditing={handleSearch}
+        onFocus={handleTap}
       />
-    </View>                                                                                      
+    </View>
   );
 };
 

@@ -87,6 +87,7 @@ export default Card;
 
 const styles = StyleSheet.create({
   card: {
+    marginRight: 5,
     backgroundColor: '#FFFFFC',
     borderRadius: 10,
     width: 170,
