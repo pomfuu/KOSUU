@@ -22,7 +22,13 @@ const WishlistCard = ({productID, productName, productPrice, productImage}) => {
       
       const itemDoc = existingItemsSnapshot.docs[0];
       await deleteDoc(itemDoc.ref);
+
+      const updatedItemsSnapshot = await getDocs(existingItemQuery); // Re-run the query
+    if (updatedItemsSnapshot.empty) {
+      setIsLiked(false); // If the item is not in the wishlist, set `isLiked` to false
+    }
     
+    //Error
     } catch (error) {
       console.error(error);
     }

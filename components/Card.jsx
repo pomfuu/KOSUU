@@ -85,6 +85,7 @@ const Card = ({ id, showHeader, category, name, price, rating, description, stoc
     fetchImage();
   }, []);
 
+  //Next
   useEffect(() => {
     if (!user) return; //kalau ternyata error user belom login, batal
 

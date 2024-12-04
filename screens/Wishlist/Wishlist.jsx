@@ -10,7 +10,7 @@ import { onSnapshot, collection, query, getDocs, where } from 'firebase/firestor
 const Wishlist = () => {
 
   const [wishlistItems, setWishlistItems] = useState([]);
-  const { user } = useAuth();
+  const { user } = useAuth(); //Cek user yg login
 
   const fetchWishlistItems = async (userId) => {
     const wishlistRef = collection(db, 'Users', userId, 'Wishlist');
