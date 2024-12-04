@@ -99,4 +99,8 @@ const styles = StyleSheet.create({
     color: '#FFFFFC',
     fontSize: 18,
   },
+<<<<<<< Updated upstream
 });
+=======
+});
+>>>>>>> Stashed changes

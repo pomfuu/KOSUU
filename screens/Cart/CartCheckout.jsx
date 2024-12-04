@@ -38,7 +38,11 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#1A47BC',
     paddingHorizontal: 120,
+<<<<<<< Updated upstream
     paddingVertical: 15,
+=======
+    paddingVertical: 20,
+>>>>>>> Stashed changes
     borderRadius: 15,
     justifyContent: 'center'
   },
@@ -48,4 +52,8 @@ const styles = StyleSheet.create({
     fontFamily: 'afacad_Bold',
     alignSelf:'center'
   },
+<<<<<<< Updated upstream
 });
+=======
+});
+>>>>>>> Stashed changes

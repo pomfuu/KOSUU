@@ -40,11 +40,9 @@ const Card = ({ id, showHeader, category, name, price, rating, description, stoc
     const fetchImage = async () => {
       try {
 
-        console.log('Storagee:', storage);
         const imageRef = ref(storage, imageURL); 
 
         const url = await getDownloadURL(imageRef);
-        console.log(url);
         setImageUrl(url);
       } catch (error) {
         console.error("Error fetching image from Firebase:", error);
