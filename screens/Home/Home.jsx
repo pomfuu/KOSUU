@@ -20,8 +20,6 @@ const Home = () => {
     try {
       const cardsCollection = collection(db, 'Products');
       const snapshot = await getDocs(cardsCollection);
-
-      // Untuk feature search, tapi harusnya nanti masih dilanjutin lagi seandainya jadi page terpisah
       const cardList = snapshot.docs
         .map(doc => ({
           id: doc.id,
@@ -29,7 +27,7 @@ const Home = () => {
         }))
         .filter(card => {
           if (searchTerm === '') return true; 
-          return card.name.toLowerCase().includes(searchTerm.toLowerCase()); //Cari search berdasarkan name
+          return card.name.toLowerCase().includes(searchTerm.toLowerCase());
         });
 
       setCards(cardList);
