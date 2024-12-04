@@ -34,7 +34,7 @@ const Wishlist = () => {
   
       const unsubscribe = fetchWishlistItems(user.uid);
   
-      return () => unsubscribe();
+      return () => unsubscribe;
     }
   }, [user]);
 
