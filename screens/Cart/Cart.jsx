@@ -139,8 +139,4 @@ const styles = StyleSheet.create({
     color: '#8E8E8D',
     marginTop: 5,
   },
-<<<<<<< Updated upstream
 });
-=======
-});
->>>>>>> Stashed changes
