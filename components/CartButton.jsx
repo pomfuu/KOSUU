@@ -62,7 +62,7 @@ const CartButton = ({ product, userId }) => {
 
         // Bikin dokumen baru di subcollection Cart dengan ID random
         if (querySnapshot.empty) {
-            // If no matching product found, add new item to the cart
+            // Kalo product belom ada di cart
             const newCartItemRef = await addDoc(cartRef, {
                 productID: product.id,
                 productName: product.name,
@@ -76,11 +76,11 @@ const CartButton = ({ product, userId }) => {
             });
             console.log('New product added to cart:', newCartItemRef.id);
         } else {
-            // If a matching product exists, increment the quantity
+            //Kalo udah ada di cart, ditambahin quantity nya aja
             querySnapshot.forEach(async (docSnap) => {
                 const cartItemRef = doc(db, 'Users', userId, 'Cart', docSnap.id);
                 await updateDoc(cartItemRef, {
-                    quantity: increment(1) // Increment the quantity by 1
+                    quantity: increment(1)
                 });
                 console.log('Quantity updated for product in cart:', docSnap.id);
             });
@@ -93,9 +93,12 @@ const CartButton = ({ product, userId }) => {
     const handleCheckout = () =>{
         const productWithSelections = {
             ...product, // Spread the original product properties
-            selectedVariantValue: product.selectedVariantValue,
-            selectedSizeValue: product.selectedSizeValue,
-            selectedColorValue: product.selectedColorValue,
+            productName: product.name,
+            productImage: product.image,
+            productPrice: Number(product.price),
+            selectedVariant: product.selectedVariantValue,
+            selectedSize: product.selectedSizeValue,
+            selectedColor: product.selectedColorValue,
           };
         
           // Navigate to Checkout and pass the new product object

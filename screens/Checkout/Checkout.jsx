@@ -51,6 +51,30 @@ const Checkout = () => {
     } else navigation.navigate('DebitCard')
   }
 
+  //Function ini untuk normalisasi, biar tetep bisa checkout langsung atau melalui cart
+  const standardizeProduct = (product) => {
+
+    //Kalau checkout dari cart (asumsi ada lebih dari 1 product)
+    if (Array.isArray(product)) {
+      return product;
+    }
+    
+    // Kalau checkout langsung (asumsi cuman 1 product)
+    else if (typeof product === 'object' && product !== null) {
+      return [product];
+    }
+
+  };
+
+  const standardizedProducts = standardizeProduct(product);
+
+  // Hitung total harga
+  const totalProductPrice = standardizedProducts.reduce((sum, item) => {
+    const price = typeof item.productPrice === 'number' ? item.productPrice : 0;
+    console.log("harga " + item.price);
+    return sum + price;
+  }, 0);
+
   return (
       <View style={styles.container}>
         <HeaderNav title='Checkout'/>
@@ -62,13 +86,13 @@ const Checkout = () => {
             <View>
 
               <CheckoutCard
-              product= {product} />
+              product={standardizedProducts} />
 
               <View style={{marginTop: 20}}>
                 <Text style={{fontFamily:'afacad_Bold', fontSize: 16, color:'#1A47BC', marginBottom: 5}}>Price details</Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 5 }}>
                   <Text style={{ fontFamily: 'afacad_Medium', fontSize: 16, color: '#8E8E8D' }}>Product price</Text>
-                  <Text style={{ fontFamily: 'afacad_Medium', fontSize: 16, color: '#8E8E8D', textAlign: 'right' }}>Rp{Number(product.price)}</Text>
+                  <Text style={{ fontFamily: 'afacad_Medium', fontSize: 16, color: '#8E8E8D', textAlign: 'right' }}>Rp{Number(totalProductPrice)}</Text>
                 </View>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 5 }}>
                   <Text style={{ fontFamily: 'afacad_Medium', fontSize: 16, color: '#8E8E8D' }}>Delivery fee</Text>
@@ -81,7 +105,7 @@ const Checkout = () => {
                 <View style={{ height: 0.5, backgroundColor: '#8E8E8D', marginTop: 15 }} />
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 5 }}>
                   <Text style={{ fontFamily: 'afacad_Medium', fontSize: 16, color: '#1E1E1E' }}>Total</Text>
-                  <Text style={{ fontFamily: 'afacad_Medium', fontSize: 16, color: '#1E1E1E', textAlign: 'right' }}>Rp{Number(product.price) + deliveryfee + servicefee}</Text>
+                  <Text style={{ fontFamily: 'afacad_Medium', fontSize: 16, color: '#1E1E1E', textAlign: 'right' }}>Rp{Number(totalProductPrice) + deliveryfee + servicefee}</Text>
                 </View>
                 <View>
                   <Text style={{ fontFamily: 'afacad_Medium', fontSize: 16, color: '#1A47BC', marginTop: 15 }}>Address detail</Text>

@@ -1,30 +1,55 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import Container from '../../styles/Container';
 import OrderImage from '../../assets/KOSU/Card1.png'; 
 import { useNavigation } from '@react-navigation/native';
 
 const CheckoutCard = ({ product }) => {
     const navigation = useNavigation();
+    //const product = Array.isArray(product) ? product : [product];
+
+    useEffect(() => {
+      console.log(product);
+    });
 
   return (
     <View>
-      <View>
-        <Text style={styles.store}>Store Name</Text>
-            <View style={{flexDirection:'row', marginTop: 10, gap: 10,}}>
-                <Image source={{ uri: product.image }} style={styles.image} /> 
-                <View style={{position:'relative'}}>
-                    <View>
-                        <Text style={{fontSize: 16, fontFamily: 'afacad_Medium'}}>{product.name}</Text>
-                        {product.selectedVariantValue && <Text style={{fontSize: 16, fontFamily: 'afacad_Medium', color:'#8E8E8D', marginTop: 5}}>Variant : {product.selectedVariantValue}</Text>}
-                        {product.selectedSizeValue && <Text style={{fontSize: 16, fontFamily: 'afacad_Medium', color:'#8E8E8D'}}>Size : {product.selectedSizeValue}</Text>}
-                        {product.selectedColorValue && <Text style={{fontSize: 16, fontFamily: 'afacad_Medium', color:'#8E8E8D'}}>Color : {product.selectedColorValue}</Text>}
-                        <Text style={{fontSize: 16, fontFamily: 'afacad_Medium', color:'#8E8E8D'}}>Qty : 1</Text>
-                        <Text style={{fontSize: 18, fontFamily: 'afacad_Bold', color:'#1A47BC', marginTop: 10}}>Rp {(product.price).toLocaleString()}</Text>
-                    </View>
-                </View>
+      {product.map((item) => (
+        <View key={item.id} style={styles.cardContainer}>
+          <Text style={styles.store}>Store Name</Text>
+          <View style={styles.productRow}>
+            <Image
+              source={{ uri: item.productImage }}
+              style={styles.image}
+              resizeMode="contain"
+            />
+            <View style={styles.productDetails}>
+              <Text style={styles.productName}>{item.productName}</Text>
+              {item.selectedVariant && (
+                <Text style={styles.variantText}>
+                  Variant: {item.selectedVariant}
+                </Text>
+              )}
+              {item.selectedSize && (
+                <Text style={styles.variantText}>
+                  Size: {item.selectedSize}
+                </Text>
+              )}
+              {item.selectedColor && (
+                <Text style={styles.variantText}>
+                  Color: {item.selectedColor}
+                </Text>
+              )}
+              <Text style={styles.quantityText}>
+                Qty: {item.quantity || 1}
+              </Text>
+              <Text style={styles.productPrice}>
+                Rp {item.productPrice}
+              </Text>
             </View>
-      </View>
+          </View>
+        </View>
+      ))}
     </View>
   );
 };
@@ -32,6 +57,17 @@ const CheckoutCard = ({ product }) => {
 export default CheckoutCard;
 
 const styles = StyleSheet.create({
+  cardContainer: {
+    backgroundColor: '#FFF',
+    padding: 15,
+    marginVertical: 10,
+    borderRadius: 10,
+    elevation: 2,
+    shadowColor: '#000', 
+    shadowOffset: { width: 0, height: 2 }, 
+    shadowOpacity: 0.1, 
+    shadowRadius: 5,
+  },
   store: {
     fontFamily: 'afacad_Medium',
     textAlign: 'center',
@@ -40,22 +76,54 @@ const styles = StyleSheet.create({
     backgroundColor: '#1A47BC',
     width: '35%',
     borderRadius: 10,
-    borderColor: 'none',
     color: '#FBFAF5',
+    alignSelf: 'center',
+  },
+  productRow: {
+    flexDirection: 'row',
+    marginTop: 10,
+    gap: 10,
+    alignItems: 'center',
   },
   image: {
-    width: 120, 
+    width: 120,
     height: 120,
     borderRadius: 10,
-    resizeMode: 'contain', 
+    resizeMode: 'contain',
   },
-  button: {
-    backgroundColor: '#1A47BC',
-    paddingVertical: 8,
-    width: 100,
-    borderRadius: 5,
-    position: 'absolute',
-    bottom: 0,
-    right: -100,
+  productDetails: {
+    flex: 1,
+    justifyContent: 'space-between',
+  },
+  productName: {
+    fontSize: 16,
+    fontFamily: 'afacad_Medium',
+    color: '#333',
+    marginBottom: 5,
+  },
+  variantText: {
+    fontSize: 14,
+    fontFamily: 'afacad_Medium',
+    color: '#8E8E8D',
+    marginBottom: 3,
+  },
+  quantityText: {
+    fontSize: 14,
+    fontFamily: 'afacad_Medium',
+    color: '#8E8E8D',
+    marginTop: 5,
+  },
+  productPrice: {
+    fontSize: 18,
+    fontFamily: 'afacad_Bold',
+    color: '#1A47BC',
+    marginTop: 10,
+  },
+  noProducts: {
+    fontSize: 16,
+    fontFamily: 'afacad_Medium',
+    color: '#8E8E8D',
+    textAlign: 'center',
+    marginTop: 20,
   },
 });

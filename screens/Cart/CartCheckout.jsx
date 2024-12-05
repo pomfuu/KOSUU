@@ -2,11 +2,12 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 
-const CartCheckout = ({ totalPrice, showCheckoutButton }) => {
+const CartCheckout = ({ totalPrice, showCheckoutButton, selectedItems  }) => {
   const navigation = useNavigation();
 
   const handleCheckout = () => {
-    navigation.navigate('Checkout');
+    console.log('Selected Items:', selectedItems);
+    navigation.navigate('Checkout', { product: selectedItems });
   };
 
   if (!showCheckoutButton) return null
