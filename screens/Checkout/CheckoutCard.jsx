@@ -4,7 +4,7 @@ import Container from '../../styles/Container';
 import OrderImage from '../../assets/KOSU/Card1.png'; 
 import { useNavigation } from '@react-navigation/native';
 
-const CheckoutCard = () => {
+const CheckoutCard = ({ product }) => {
     const navigation = useNavigation();
 
   return (
@@ -12,14 +12,15 @@ const CheckoutCard = () => {
       <View>
         <Text style={styles.store}>Store Name</Text>
             <View style={{flexDirection:'row', marginTop: 10, gap: 10,}}>
-                <Image source={OrderImage} style={styles.image} /> 
+                <Image source={{ uri: product.image }} style={styles.image} /> 
                 <View style={{position:'relative'}}>
                     <View>
-                        <Text style={{fontSize: 16, fontFamily: 'afacad_Medium'}}>Klee Dodoco Named</Text>
-                        <Text style={{fontSize: 16, fontFamily: 'afacad_Medium', color:'#8E8E8D', marginTop: 5}}>Size : One Size</Text>
-                        <Text style={{fontSize: 16, fontFamily: 'afacad_Medium', color:'#8E8E8D'}}>Color : One Color</Text>
+                        <Text style={{fontSize: 16, fontFamily: 'afacad_Medium'}}>{product.name}</Text>
+                        {product.selectedVariantValue && <Text style={{fontSize: 16, fontFamily: 'afacad_Medium', color:'#8E8E8D', marginTop: 5}}>Variant : {product.selectedVariantValue}</Text>}
+                        {product.selectedSizeValue && <Text style={{fontSize: 16, fontFamily: 'afacad_Medium', color:'#8E8E8D'}}>Size : {product.selectedSizeValue}</Text>}
+                        {product.selectedColorValue && <Text style={{fontSize: 16, fontFamily: 'afacad_Medium', color:'#8E8E8D'}}>Color : {product.selectedColorValue}</Text>}
                         <Text style={{fontSize: 16, fontFamily: 'afacad_Medium', color:'#8E8E8D'}}>Qty : 1</Text>
-                        <Text style={{fontSize: 18, fontFamily: 'afacad_Bold', color:'#1A47BC', marginTop: 10}}>Rp259.000</Text>
+                        <Text style={{fontSize: 18, fontFamily: 'afacad_Bold', color:'#1A47BC', marginTop: 10}}>Rp {(product.price).toLocaleString()}</Text>
                     </View>
                 </View>
             </View>

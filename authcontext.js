@@ -1,13 +1,13 @@
 import React, { createContext, useContext, useState } from 'react';
 
-const AuthContext = createContext(); // Create context for user data
+const AuthContext = createContext(); 
 
 export const useAuth = () => {
-  return useContext(AuthContext); // Custom hook to access auth context
+  return useContext(AuthContext); 
 };
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null); // Store user data
+  const [user, setUser] = useState(null);
 
   const login = (uid, email) => {
     setUser({ uid, email });
