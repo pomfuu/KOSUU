@@ -91,6 +91,8 @@ const Cart = () => {
     }
   }, [user]);
 
+  const selectedCartItems = cartItems.filter((item) => selectedItems[item.id]);
+
   return (
     <View style={styles.container}>
       <HeaderNav title="My Cart" />
@@ -111,7 +113,7 @@ const Cart = () => {
           </View>
         </SafeAreaView>
       </ScrollView>
-      <CartCheckout totalPrice={totalPrice} showCheckoutButton={totalPrice > 0} />
+      <CartCheckout totalPrice={totalPrice} showCheckoutButton={totalPrice > 0} selectedItems={selectedCartItems}/>
     </View>
   );
 };

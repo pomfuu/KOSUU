@@ -26,7 +26,6 @@ const Profile = () => {
   useEffect(() => {
     const fetchCards = async () => {
       try {
-        console.log(user.uid);
         const userDoc = doc(db, 'Users', user.uid);
         const docSnapshot = await getDoc(userDoc);
 
