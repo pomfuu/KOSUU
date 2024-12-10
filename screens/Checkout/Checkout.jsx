@@ -44,11 +44,21 @@ const Checkout = () => {
   const servicefee = 1000;
 
   const [selectedOption, setSelectedOption] = useState('Virtual Account');
-  const navigation = useNavigation()
+  const navigation = useNavigation();
+
   const handlePlaceOrder = () => {
-    if(selectedOption === 'Virtual Account'){
-      navigation.navigate('VirtualAccount')
-    } else navigation.navigate('DebitCard')
+    const orderData = {
+      product: standardizedProducts, // All standardized products
+      deliveryfee,
+      servicefee,
+      totalPrice: totalProductPrice + deliveryfee + servicefee, // Calculate total including fees
+    };
+
+    if (selectedOption === 'Virtual Account') {
+      navigation.navigate('VirtualAccount', orderData);
+    } else {
+      navigation.navigate('DebitCard', orderData);
+    }
   }
 
   //Function ini untuk normalisasi, biar tetep bisa checkout langsung atau melalui cart

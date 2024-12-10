@@ -3,12 +3,15 @@ import React from 'react'
 import Container from '../../styles/Container'
 import HeaderNav from '../../navigation/HeaderNav'
 import * as Clipboard from 'expo-clipboard';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import OrderConfirmation from './OrderConfirmation';
 
 const VirtualAccount = () => {
   const navigation = useNavigation();
   const vaNumber = '896 0838 7359 4727';
+
+  const route = useRoute();
+  const { products, deliveryfee, servicefee, totalPrice } = route.params;
 
   const handleCopyToClipboard = async () => {
     try {
@@ -36,7 +39,7 @@ const VirtualAccount = () => {
             <View>
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', }}>
                 <Text style={{ fontFamily: 'afacad_Medium', fontSize: 16, color: '#1E1E1E' }}>Total</Text>
-                <Text style={{ fontFamily: 'afacad_Medium', fontSize: 16, color: '#1E1E1E', textAlign: 'right' }}>Rp306.000</Text>
+                <Text style={{ fontFamily: 'afacad_Medium', fontSize: 16, color: '#1E1E1E', textAlign: 'right' }}>Rp {totalPrice.toLocaleString()}</Text>
               </View>
               <View style={{ height: 0.5, backgroundColor: '#1A47BC', marginVertical: 15}} />
                 <Text style={{ fontSize: 16, fontFamily: 'afacad_Bold', color:'#1A47BC' }}>Virtual account number</Text>
