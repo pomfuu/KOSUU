@@ -5,13 +5,17 @@ import HeaderNav from '../../navigation/HeaderNav'
 import * as Clipboard from 'expo-clipboard';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import OrderConfirmation from './OrderConfirmation';
+import { db } from '../../dbconfig';
+import { useAuth } from '../../authcontext';
+import { collection, addDoc } from 'firebase/firestore';
 
 const VirtualAccount = () => {
   const navigation = useNavigation();
   const vaNumber = '896 0838 7359 4727';
 
+  const { user } = useAuth(); //Cek user yg login
   const route = useRoute();
-  const { products, deliveryfee, servicefee, totalPrice } = route.params;
+  const { product, deliveryfee, servicefee, totalPrice } = route.params;
 
   const handleCopyToClipboard = async () => {
     try {
@@ -24,8 +28,34 @@ const VirtualAccount = () => {
     }
   };
 
-  const handleOk = () => {
-    navigation.navigate('OrderConfirmation')
+  const handleOk = async () => {
+    //Buat handle masukkin order ke database
+    console.log(product);
+    try{
+      const formattedProducts = product.map((product) => ({
+        productID: product.productID,
+        productName: product.productName,
+        productImage: product.productImage,
+        productPrice: product.productPrice,
+        ...(product.selectedVariant != null && { selectedVariant: product.selectedVariant }),
+        ...(product.selectedSize != null && { selectedSize: product.selectedSize }),
+        ...(product.selectedColor != null && { selectedColor: product.selectedColor }),
+        quantity: product.quantity,
+    }));
+
+      const newProductData = {
+        userID: user.uid,
+        sellerID: "tesID",
+        product: formattedProducts,
+        status: "Packed"
+      };
+  
+      const docRef = await addDoc(collection(db, "Orders"), newProductData);
+  
+      navigation.navigate('OrderConfirmation')
+    }catch(e){
+      console.error("Error adding document: ", e);
+    }
   }
 
   return (

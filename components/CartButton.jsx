@@ -62,25 +62,25 @@ const CartButton = ({ product, userId }) => {
 
         // Bikin dokumen baru di subcollection Cart dengan ID random
         if (querySnapshot.empty) {
-            // Kalo product belom ada di cart
+            // If no matching product found, add new item to the cart
             const newCartItemRef = await addDoc(cartRef, {
                 productID: product.id,
                 productName: product.name,
                 productImage: product.image,
                 productPrice: Number(product.price),
                 userId: userId,
-                quantity: 1, // Default quantity is 1
+                quantity: 1,
                 ...(product.selectedVariantValue && { selectedVariant: product.selectedVariantValue }), 
                 ...(product.selectedColorValue && { selectedColor: product.selectedColorValue }), 
                 ...(product.selectedSizeValue && { selectedSize: product.selectedSizeValue })
             });
             console.log('New product added to cart:', newCartItemRef.id);
         } else {
-            //Kalo udah ada di cart, ditambahin quantity nya aja
+            // Kalau barangnya udah ada di cart
             querySnapshot.forEach(async (docSnap) => {
                 const cartItemRef = doc(db, 'Users', userId, 'Cart', docSnap.id);
                 await updateDoc(cartItemRef, {
-                    quantity: increment(1)
+                    quantity: increment(1) // Quantity nya aja tambahin 1
                 });
                 console.log('Quantity updated for product in cart:', docSnap.id);
             });
@@ -91,17 +91,20 @@ const CartButton = ({ product, userId }) => {
 
       
     const handleCheckout = () =>{
+        
         const productWithSelections = {
-            ...product, // Spread the original product properties
-            productName: product.name,
-            productImage: product.image,
-            productPrice: Number(product.price),
+            id: product.id,
             selectedVariant: product.selectedVariantValue,
             selectedSize: product.selectedSizeValue,
             selectedColor: product.selectedColorValue,
+            productName: product.name,
+            productID: product.id,
+            productPrice: product.price,
+            productImage: product.image,
           };
         
           // Navigate to Checkout and pass the new product object
+          console.log("hmm " + productWithSelections);
         navigation.navigate('Checkout', { product: productWithSelections });
     };
 

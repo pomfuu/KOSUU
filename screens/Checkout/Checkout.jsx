@@ -47,6 +47,7 @@ const Checkout = () => {
   const navigation = useNavigation();
 
   const handlePlaceOrder = () => {
+    console.log("standardized product : " + standardizedProducts);
     const orderData = {
       product: standardizedProducts, // All standardized products
       deliveryfee,
