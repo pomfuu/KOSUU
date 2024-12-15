@@ -15,7 +15,7 @@ import { user } from '../../authconfig';
 
 const Home = () => {
   const [cards, setCards] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState(''); //
 
   const fetchProducts = async (searchTerm = '') => {
     try {
