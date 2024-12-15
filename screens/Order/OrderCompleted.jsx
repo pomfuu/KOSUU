@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import Container from '../../styles/Container';
 import OrderCard from './OrderCard';
 
+
 const OrderCompleted = () => (
   <Container>
     <View style={styles.frame}>

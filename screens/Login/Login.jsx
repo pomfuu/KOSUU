@@ -29,7 +29,7 @@ const Login = () => {
       // });
       login(user.uid, user.email); 
 
-      // Navigate to the Home screen
+      // Navigate home screen
       navigation.navigate('Bottom Navigation');
     } catch (err) {
       console.log(err.message);

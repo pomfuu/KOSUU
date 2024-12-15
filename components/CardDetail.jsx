@@ -47,6 +47,8 @@ const CardDetail = () => {
   const selectedSizeValue = selectedSize !== null ? size[selectedSize] : null;
   const selectedColorValue = selectedColor !== null ? color[selectedColor] : null;
 
+  const product = {id, name, image, price, selectedVariantValue, selectedSizeValue, selectedColorValue };
+
   return (
     <View style={styles.container}>
       <HeaderNav title={name} />
@@ -182,14 +184,8 @@ const CardDetail = () => {
         </View>
       </ScrollView>
       <CartButton
-        productId={id}
-        productName={name}
-        productImage={image}
-        productPrice={price}
-        selectedVariant={selectedVariantValue}
-        selectedSize={selectedSizeValue}
-        selectedColor={selectedColorValue}
-        userId={user.uid}
+        product = {product}
+        userId = {user.uid}
       />
     </View>
   );
@@ -229,6 +225,7 @@ const CardDetail = () => {
       width: '30%',
       textAlign: 'center',
       padding: 7,
+      marginTop: 5,
       borderRadius: 5,
     }
   });

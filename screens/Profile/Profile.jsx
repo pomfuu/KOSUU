@@ -26,7 +26,6 @@ const Profile = () => {
   useEffect(() => {
     const fetchCards = async () => {
       try {
-        console.log(user.uid);
         const userDoc = doc(db, 'Users', user.uid);
         const docSnapshot = await getDoc(userDoc);
 
@@ -198,7 +197,7 @@ const Profile = () => {
             )}
 
             <View style={styles.horizontalLine} />
-            <View style={{ flex: 1, marginRight: 10 }}>
+              {/* <View style={{ flex: 1, marginRight: 10 }}>
                 <Text style={styles.detailTitle}>Date of Birth</Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center', }}>
                   <Text style={{ fontSize: 16, fontFamily: 'afacad_SemiBold', color: '#1E1E1E', marginTop: 10 }}>
@@ -217,14 +216,18 @@ const Profile = () => {
                     )}
                 </View>
                 <View style={styles.horizontalLine} />
-              </View>
-              <View>
+              </View> */}
+
+              {/* <View>
                   <Text style={styles.detailTitle}>Gender</Text>
                   <Text style={styles.detailValue}>{userInfo.gender}</Text>
                 <View style={styles.horizontalLine} />
-              </View>
+              </View> */}
+
           </View>
         </View>
+
+
         <View>
           <Text style={{ fontSize: 18, fontFamily: 'afacad_Bold', color: '#1A47BC' }}>Address Details</Text>
           <View style={styles.accountDetailWrapper2}>

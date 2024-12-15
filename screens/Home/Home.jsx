@@ -10,18 +10,17 @@ import Tes from '../../components/Tes';
 import PopularCategories from './PopularCategories';
 import { db } from '../../dbconfig';
 import { doc, collection, getDocs } from 'firebase/firestore';
+import { user } from '../../authconfig';
 
 
 const Home = () => {
   const [cards, setCards] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState(''); //
 
   const fetchProducts = async (searchTerm = '') => {
     try {
       const cardsCollection = collection(db, 'Products');
       const snapshot = await getDocs(cardsCollection);
-
-      // Untuk feature search, tapi harusnya nanti masih dilanjutin lagi seandainya jadi page terpisah
       const cardList = snapshot.docs
         .map(doc => ({
           id: doc.id,
@@ -29,7 +28,7 @@ const Home = () => {
         }))
         .filter(card => {
           if (searchTerm === '') return true; 
-          return card.name.toLowerCase().includes(searchTerm.toLowerCase()); //Cari search berdasarkan name
+          return card.name.toLowerCase().includes(searchTerm.toLowerCase());
         });
 
       setCards(cardList);

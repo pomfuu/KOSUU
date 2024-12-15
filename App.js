@@ -22,6 +22,9 @@ import Checkout from './screens/Checkout/Checkout';
 import DebitCard from './screens/Checkout/DebitCard';
 import VirtualAccount from './screens/Checkout/VirtualAccount';
 import OrderConfirmation from './screens/Checkout/OrderConfirmation';
+import SearchList from './components/Search/SearchList';
+import SearchEmpty from './components/Search/SearchEmpty';
+import SearchFilter from './components/Search/SearchFilter';
 
 const Stack = createNativeStackNavigator();
 
@@ -55,15 +58,30 @@ export default function App() {
 
     <AuthProvider>
       <NavigationContainer style={[styles.textStyle, styles.container]}>
-        <Stack.Navigator>
+        <Stack.Navigator initialRouteName='Login'>
           <Stack.Screen
             name='Bottom Navigation'
             component={ButtonTabNavigation}
             options={{ headerShown: false }}
           />
           <Stack.Screen
+            name='SearchFilter'
+            component={SearchFilter}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name='SearchEmpty'
+            component={SearchEmpty}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
             name='Wishlist'
             component={Wishlist}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name='SearchList'
+            component={SearchList}
             options={{ headerShown: false }}
           />
           <Stack.Screen
