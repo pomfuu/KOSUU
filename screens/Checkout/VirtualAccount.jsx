@@ -40,7 +40,7 @@ const VirtualAccount = () => {
         ...(product.selectedVariant != null && { selectedVariant: product.selectedVariant }),
         ...(product.selectedSize != null && { selectedSize: product.selectedSize }),
         ...(product.selectedColor != null && { selectedColor: product.selectedColor }),
-        quantity: product.quantity,
+        quantity: (product.quantity || 1)
     }));
 
       const newProductData = {
@@ -49,7 +49,10 @@ const VirtualAccount = () => {
         product: formattedProducts,
         status: "Packed"
       };
-  
+      
+      console.log("Formatted Products: ", formattedProducts);
+      console.log("New Product Data: ", newProductData);
+
       const docRef = await addDoc(collection(db, "Orders"), newProductData);
   
       navigation.navigate('OrderConfirmation')

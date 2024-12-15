@@ -81,8 +81,7 @@ const Checkout = () => {
 
   // Hitung total harga
   const totalProductPrice = standardizedProducts.reduce((sum, item) => {
-    const price = typeof item.productPrice === 'number' ? item.productPrice : 0;
-    console.log("harga " + item.price);
+    const price = Number(item.productPrice) || 0;
     return sum + price;
   }, 0);
 
