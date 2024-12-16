@@ -17,7 +17,7 @@ const OrderSent = () => {
     const q = query(
       ordersRef, 
       where('userID', '==', user.uid), // Cari order berdasarkan user UID
-      where('status', '==', 'Sent') // Cari order yang status Packed
+      where('status', '==', 'Sent') // Cari order yang status Sent
     );
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
