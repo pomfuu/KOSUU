@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import Container from '../../styles/Container';
 import OrderCard from './OrderCard';
 import { db } from '../../dbconfig';
@@ -30,20 +30,21 @@ const OrderPacked = () => {
       console.error("Error fetching orders: ", error);
     });
 
-    // Cleanup subscription on unmount
     return () => unsubscribe();
   }, [user]);
 
   console.log(orders);
 
   return (
-    <Container>
-      <View style={styles.frame}>
-        {orders.map(order => (
-          <OrderCard key={order.id} orderData={order} isActive={true} />
-        ))}
-      </View>
-    </Container>
+    <ScrollView showsVerticalScrollIndicator={false}> 
+      <Container>
+        <View style={styles.frame}>
+          {orders.map(order => (
+            <OrderCard key={order.id} orderData={order} isActive={false} />
+          ))}
+        </View>
+      </Container>
+    </ScrollView>
   );
   
 };

@@ -2,7 +2,10 @@ import { Alert, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View 
 import React, { useState, useEffect } from 'react';
 import Container from '../../styles/Container';
 import HeaderNav from '../../navigation/HeaderNav';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { db } from '../../dbconfig';
+import { useAuth } from '../../authcontext';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const DebitCard = () => {
   const navigation = useNavigation();
@@ -13,6 +16,10 @@ const DebitCard = () => {
   const [email, setEmail] = useState('');
 
   const [isFormComplete, setIsFormComplete] = useState(false);
+
+  const { user } = useAuth(); //Cek user yg login
+  const route = useRoute();
+  const { product, deliveryfee, servicefee, totalPrice } = route.params;
 
   const formatting = (text) => {
     const cleanedText = text.replace(/[^0-9]/g, '');
@@ -35,8 +42,38 @@ const DebitCard = () => {
     }
   };
 
-  const handleOk = () => {
-    navigation.navigate('OrderConfirmation');
+  const handleOk = async () => {//Buat handle masukkin order ke database
+    console.log(product);
+    try{
+      const formattedProducts = product.map((product) => ({
+        productID: product.productID,
+        productName: product.productName,
+        productImage: product.productImage,
+        productPrice: product.productPrice,
+        ...(product.selectedVariant != null && { selectedVariant: product.selectedVariant }),
+        ...(product.selectedSize != null && { selectedSize: product.selectedSize }),
+        ...(product.selectedColor != null && { selectedColor: product.selectedColor }),
+        quantity: (product.quantity || 1)
+    }));
+
+      const newProductData = {
+        userID: user.uid,
+        sellerID: "tesID",
+        product: formattedProducts,
+        status: "Packed",
+        orderDate: serverTimestamp(),
+        totalPrice: Number(totalPrice)
+      };
+      
+      console.log("Formatted Products: ", formattedProducts);
+      console.log("New Product Data: ", newProductData);
+
+      const docRef = await addDoc(collection(db, "Orders"), newProductData);
+  
+      navigation.navigate('OrderConfirmation')
+    }catch(e){
+      console.error("Error adding document: ", e);
+    }
   };
 
   useEffect(() => {
@@ -58,7 +95,7 @@ const DebitCard = () => {
           <View>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
               <Text style={{ fontFamily: 'afacad_Medium', fontSize: 16, color: '#1E1E1E' }}>Total</Text>
-              <Text style={{ fontFamily: 'afacad_Medium', fontSize: 16, color: '#1E1E1E', textAlign: 'right' }}>Rp306.000</Text>
+              <Text style={{ fontFamily: 'afacad_Medium', fontSize: 16, color: '#1E1E1E', textAlign: 'right' }}>Rp {totalPrice.toLocaleString()}</Text>
             </View>
             <View style={{ height: 0.5, backgroundColor: '#1A47BC', marginVertical: 15 }} />
             <Text style={{ fontSize: 16, fontFamily: 'afacad_Bold', color: '#1A47BC' }}>Card Information</Text>
