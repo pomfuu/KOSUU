@@ -34,7 +34,7 @@ const OrderCanceled = () => {
   }, [user]);
 
   console.log(orders);
-
+  //Tes
   return (
     <ScrollView showsVerticalScrollIndicator={false}> 
       <Container>
