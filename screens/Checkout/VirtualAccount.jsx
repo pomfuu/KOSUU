@@ -7,7 +7,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import OrderConfirmation from './OrderConfirmation';
 import { db } from '../../dbconfig';
 import { useAuth } from '../../authcontext';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const VirtualAccount = () => {
   const navigation = useNavigation();
@@ -43,12 +43,14 @@ const VirtualAccount = () => {
         quantity: (product.quantity || 1)
     }));
 
-      const newProductData = {
-        userID: user.uid,
-        sellerID: "tesID",
-        product: formattedProducts,
-        status: "Packed"
-      };
+    const newProductData = {
+      userID: user.uid,
+      sellerID: "tesID",
+      product: formattedProducts,
+      status: "Packed",
+      orderDate: serverTimestamp(),
+      totalPrice: Number(totalPrice)
+    };
       
       console.log("Formatted Products: ", formattedProducts);
       console.log("New Product Data: ", newProductData);
