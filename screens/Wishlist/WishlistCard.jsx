@@ -17,8 +17,6 @@ const WishlistCard = ({productID, productName, productPrice, productImage}) => {
       // Cek dulu udah di wishlist apa belom
       const existingItemQuery = query(wishlistRef, where('productID', '==', productID));
       const existingItemsSnapshot = await getDocs(existingItemQuery);
-  
-      const existingItem = existingItemsSnapshot.docs.find(doc => doc.data().productID === productID);
       
       const itemDoc = existingItemsSnapshot.docs[0];
       await deleteDoc(itemDoc.ref);

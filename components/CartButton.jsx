@@ -6,27 +6,41 @@ import { useAuth } from '../authcontext';
 import { db } from '../dbconfig';
 import { getFirestore, doc, collection, setDoc, updateDoc, addDoc, getDocs, query, where, increment } from 'firebase/firestore';
 
-const CartButton = ({ productId, productName, productImage, productPrice, selectedVariant, selectedSize, selectedColor, userId }) => {
+const CartButton = ({ product, userId }) => {
     const [modal, setModal] = useState(false);
     const navigation = useNavigation();
 
-    const handleCheckout = () =>{
-        navigation.navigate('Checkout')
-    }
+    // const handleCardPressed = () => {
+    //     navigation.navigate('CardDetail', { 
+    //       id,
+    //       name, 
+    //       category, 
+    //       price, 
+    //       image: imageUrl, 
+    //       rating, 
+    //       description, 
+    //       stock, 
+    //       material, 
+    //       sizeChart, 
+    //       dimension, 
+    //       condition, 
+    //       notes, 
+    //       variant, 
+    //       size, 
+    //       color 
+    //     });
+    //   };
 
-    // const handleAddtoCart = () =>{
-    //   setModal(true)
-    // }
 
     //Logic ini untuk masukin data addtocart ke database
     const handleAddtoCart = async () => {
         // Ini cuman keperluan debugging buat nunjukin apakah datanya berhasil passing atau gak, diapus jg gapapa
-        console.log('Product ID:', productId);
-        console.log('Variant:', selectedVariant !== null ? selectedVariant : 'None');
-        console.log('Size:', selectedSize !== null ? selectedSize : 'None');
-        console.log('Color:', selectedColor !== null ? selectedColor : 'None');
-        console.log('Image URL:', productImage);
-        console.log('Price:', productPrice);
+        console.log('Product ID:', product.id);
+        console.log('Variant:', product.selectedVariantValue !== null ? product.selectedVariantValue : 'None');
+        console.log('Size:', product.selectedSizeValue !== null ? product.selectedSizeValue : 'None');
+        console.log('Color:', product.selectedColorValue !== null ? product.selectedColorValue : 'None');
+        console.log('Image URL:', product.image);
+        console.log('Price:', product.price);
         console.log('User ID:', userId);
     
         // Nyari dokumen yg sama dengan ID dari user yg login sekarang
@@ -37,10 +51,10 @@ const CartButton = ({ productId, productName, productImage, productPrice, select
 
         // Cari dulu apakah user ini udah punya produk nya di shopping cartnya
         const productQuery = query(cartRef, 
-            where("productID", "==", productId),
-            ...(selectedVariant ? [where("selectedVariant", "==", selectedVariant)] : []),
-            ...(selectedColor ? [where("selectedColor", "==", selectedColor)] : []),
-            ...(selectedSize ? [where("selectedSize", "==", selectedSize)] : [])
+            where("productID", "==", product.id),
+            ...(product.selectedVariantValue ? [where("selectedVariant", "==", product.selectedVariantValue)] : []),
+            ...(product.selectedColorValue ? [where("selectedColor", "==", product.selectedColorValue)] : []),
+            ...(product.selectedSizeValue ? [where("selectedSize", "==", product.selectedSizeValue)] : [])
         );
 
         // Query yang di atas, baru dijalanin
@@ -50,23 +64,23 @@ const CartButton = ({ productId, productName, productImage, productPrice, select
         if (querySnapshot.empty) {
             // If no matching product found, add new item to the cart
             const newCartItemRef = await addDoc(cartRef, {
-                productID: productId,
-                productName: productName,
-                productImage: productImage,
-                productPrice: Number(productPrice),
+                productID: product.id,
+                productName: product.name,
+                productImage: product.image,
+                productPrice: Number(product.price),
                 userId: userId,
-                quantity: 1, // Default quantity is 1
-                ...(selectedVariant && { selectedVariant: selectedVariant }), 
-                ...(selectedColor && { selectedColor: selectedColor }), 
-                ...(selectedSize && { selectedSize: selectedSize })
+                quantity: 1,
+                ...(product.selectedVariantValue && { selectedVariant: product.selectedVariantValue }), 
+                ...(product.selectedColorValue && { selectedColor: product.selectedColorValue }), 
+                ...(product.selectedSizeValue && { selectedSize: product.selectedSizeValue })
             });
             console.log('New product added to cart:', newCartItemRef.id);
         } else {
-            // If a matching product exists, increment the quantity
+            // Kalau barangnya udah ada di cart
             querySnapshot.forEach(async (docSnap) => {
                 const cartItemRef = doc(db, 'Users', userId, 'Cart', docSnap.id);
                 await updateDoc(cartItemRef, {
-                    quantity: increment(1) // Increment the quantity by 1
+                    quantity: increment(1) // Quantity nya aja tambahin 1
                 });
                 console.log('Quantity updated for product in cart:', docSnap.id);
             });
@@ -74,6 +88,25 @@ const CartButton = ({ productId, productName, productImage, productPrice, select
 
         setModal(true);
       };
+
+      
+    const handleCheckout = () =>{
+        
+        const productWithSelections = {
+            id: product.id,
+            selectedVariant: product.selectedVariantValue,
+            selectedSize: product.selectedSizeValue,
+            selectedColor: product.selectedColorValue,
+            productName: product.name,
+            productID: product.id,
+            productPrice: product.price,
+            productImage: product.image,
+          };
+        
+          // Navigate to Checkout and pass the new product object
+          console.log("hmm " + productWithSelections);
+        navigation.navigate('Checkout', { product: productWithSelections });
+    };
 
     return (
         <View style={{ marginVertical: 15, backgroundColor: '#FBFAF5', paddingHorizontal: 20, paddingVertical: 10, }}>

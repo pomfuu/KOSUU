@@ -1,19 +1,89 @@
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Container from '../../styles/Container'
 import HeaderNav from '../../navigation/HeaderNav'
 import CheckoutCard from './CheckoutCard';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { useAuth } from '../../authcontext';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../../dbconfig';
 
 const Checkout = () => {
+
+  // Narik data user, ini sebenernya buat narik address user ke address detail
+  const { user } = useAuth();
+  const [cards, setCards] = useState([]);
+
+  useEffect(() => {
+    const fetchCards = async () => {
+      try {
+        const userDoc = doc(db, 'Users', user.uid);
+        const docSnapshot = await getDoc(userDoc);
+
+        if (docSnapshot.exists()) {
+          const userData = docSnapshot.data();
+          setCards([userData]);  
+        } else {
+          console.log('No such document!');
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    } 
+    fetchCards();
+  }, []);
+
+  const userInfo = cards.length > 0 ? cards[0] : {};
+
+  const route = useRoute();
+  const { product } = route.params;
+  console.log('Product di Checkout :', product);
+
+  const deliveryfee = 10000;
+  const servicefee = 1000;
+
   const [selectedOption, setSelectedOption] = useState('Virtual Account');
-  const navigation = useNavigation()
+  const navigation = useNavigation();
+
   const handlePlaceOrder = () => {
-    if(selectedOption === 'Virtual Account'){
-      navigation.navigate('VirtualAccount')
-    } else navigation.navigate('DebitCard')
+    console.log("standardized product : " + standardizedProducts);
+    const orderData = {
+      product: standardizedProducts, // All standardized products
+      deliveryfee,
+      servicefee,
+      totalPrice: totalProductPrice + deliveryfee + servicefee, // Calculate total including fees
+    };
+
+    if (selectedOption === 'Virtual Account') {
+      navigation.navigate('VirtualAccount', orderData);
+    } else {
+      navigation.navigate('DebitCard', orderData);
+    }
   }
+
+  //Function ini untuk normalisasi, biar tetep bisa checkout langsung atau melalui cart
+  const standardizeProduct = (product) => {
+
+    //Kalau checkout dari cart (asumsi ada lebih dari 1 product)
+    if (Array.isArray(product)) {
+      return product;
+    }
+    
+    // Kalau checkout langsung (asumsi cuman 1 product)
+    else if (typeof product === 'object' && product !== null) {
+      return [product];
+    }
+
+  };
+
+  const standardizedProducts = standardizeProduct(product);
+
+  // Hitung total harga
+  const totalProductPrice = standardizedProducts.reduce((sum, item) => {
+    const price = Number(item.productPrice) || 0;
+    return sum + price;
+  }, 0);
 
   return (
       <View style={styles.container}>
@@ -24,32 +94,35 @@ const Checkout = () => {
           contentContainerStyle={styles.scrollContainer}>
           <Container>
             <View>
-              <CheckoutCard/>
+
+              <CheckoutCard
+              product={standardizedProducts} />
+
               <View style={{marginTop: 20}}>
                 <Text style={{fontFamily:'afacad_Bold', fontSize: 16, color:'#1A47BC', marginBottom: 5}}>Price details</Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 5 }}>
                   <Text style={{ fontFamily: 'afacad_Medium', fontSize: 16, color: '#8E8E8D' }}>Product price</Text>
-                  <Text style={{ fontFamily: 'afacad_Medium', fontSize: 16, color: '#8E8E8D', textAlign: 'right' }}>Rp295.000</Text>
+                  <Text style={{ fontFamily: 'afacad_Medium', fontSize: 16, color: '#8E8E8D', textAlign: 'right' }}>Rp{Number(totalProductPrice)}</Text>
                 </View>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 5 }}>
                   <Text style={{ fontFamily: 'afacad_Medium', fontSize: 16, color: '#8E8E8D' }}>Delivery fee</Text>
-                  <Text style={{ fontFamily: 'afacad_Medium', fontSize: 16, color: '#8E8E8D', textAlign: 'right' }}>Rp10.000</Text>
+                  <Text style={{ fontFamily: 'afacad_Medium', fontSize: 16, color: '#8E8E8D', textAlign: 'right' }}>Rp{deliveryfee}</Text>
                 </View>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 5 }}>
                   <Text style={{ fontFamily: 'afacad_Medium', fontSize: 16, color: '#8E8E8D' }}>Service fee</Text>
-                  <Text style={{ fontFamily: 'afacad_Medium', fontSize: 16, color: '#8E8E8D', textAlign: 'right' }}>Rp1.000</Text>
+                  <Text style={{ fontFamily: 'afacad_Medium', fontSize: 16, color: '#8E8E8D', textAlign: 'right' }}>Rp{servicefee}</Text>
                 </View>
                 <View style={{ height: 0.5, backgroundColor: '#8E8E8D', marginTop: 15 }} />
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 5 }}>
                   <Text style={{ fontFamily: 'afacad_Medium', fontSize: 16, color: '#1E1E1E' }}>Total</Text>
-                  <Text style={{ fontFamily: 'afacad_Medium', fontSize: 16, color: '#1E1E1E', textAlign: 'right' }}>Rp306.000</Text>
+                  <Text style={{ fontFamily: 'afacad_Medium', fontSize: 16, color: '#1E1E1E', textAlign: 'right' }}>Rp{Number(totalProductPrice) + deliveryfee + servicefee}</Text>
                 </View>
                 <View>
                   <Text style={{ fontFamily: 'afacad_Medium', fontSize: 16, color: '#1A47BC', marginTop: 15 }}>Address detail</Text>
                   <View style={{backgroundColor:'#EBF3FA', borderRadius: 5, marginTop: 5}}>
                     <View style={{ padding: 20, flexDirection:'row', gap: 10, alignItems:'center', }}>
                       <Ionicons style={{color:'#1A47BC'}} size={16} name='location-outline'/>
-                      <Text style={{fontSize: 14, fontFamily:'afacad_Medium'}}>Jalur Sutera Barat No.21 Apartemen Pacific Garden Tangerang Selatan, 15314</Text>
+                      <Text style={{fontSize: 14, fontFamily:'afacad_Medium'}}>{userInfo.address}, {userInfo.city}, {userInfo.postalcode}</Text>
                     </View>
                   </View>
                 </View>
