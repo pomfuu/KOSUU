@@ -1,12 +1,16 @@
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Image } from 'react-native'
 import React, { useState } from 'react'
 import Container from '../../styles/Container'
 import HeaderNav from '../../navigation/HeaderNav'
 import OrderCard from '../Order/OrderCard';
 import { Ionicons } from '@expo/vector-icons';
 import RatingModal from './RatingModal';
+import { useRoute } from '@react-navigation/native';
 
 const Rating = () => {
+  const route = useRoute(); // Retrieve data passed during navigation
+  const { orderId, product } = route.params || {}; // Destructure orderId and product
+
   const [rating, setRating] = useState(0)
   const [review, setReview] = useState('')
   const [modal, setModal] = useState(false);
@@ -27,6 +31,13 @@ const Rating = () => {
     setModal(true)
   }
 
+  const orderData = {
+    id: orderId,
+    product: [product],
+  };
+
+  console.log(product.productImage);
+
   return (
       <View style={styles.container}>
         <HeaderNav title='Rating'/>
@@ -35,8 +46,32 @@ const Rating = () => {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.scrollContainer}>
           <View style={styles.container}>
-            <OrderCard/>
+          <Text style={{ fontSize: 16, fontFamily: 'afacad_Bold', color: '#1A47BC' }}>
+            Order ID: {orderId}
+          </Text>
+          <View style={{ marginTop: 10, flexDirection: 'row', gap: 10 }}>
+            {/* Product Image */}
+            <Image source={{ uri: 'https://owcdn.net/img/675ec12e7ed1c.jpg' }} style={styles.image} />
+
+            {/* Product Details */}
+            <View>
+              <Text style={{ fontSize: 16, fontFamily: 'afacad_Medium' }}>
+                {product.productName || 'No Name'}
+              </Text>
+              {product.selectedSize && (
+                <Text style={styles.detailText}>Size: {product.selectedSize}</Text>
+              )}
+              {product.selectedColor && (
+                <Text style={styles.detailText}>Color: {product.selectedColor}</Text>
+              )}
+              <Text style={styles.detailText}>Qty: {product.quantity || 1}</Text>
+              <Text style={styles.priceText}>
+                Rp{product.productPrice?.toLocaleString() || '0'}
+              </Text>
+            </View>
           </View>
+        </View>
+
           <View style={{marginTop: 15}}>
              <View>
               <Text style={{fontSize: 18, fontFamily: 'afacad_Bold', color:'#1A47BC', marginLeft: 15,}}>Give your Rating</Text>

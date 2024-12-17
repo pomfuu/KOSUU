@@ -6,8 +6,12 @@ import { useNavigation } from '@react-navigation/native';
 
 const OrderCard = ({ orderData, isActive }) => {
     const navigation = useNavigation();
-    const handleClick = () => {
-        navigation.navigate('Rating');
+    const handleClick = (product, index) => {
+        navigation.navigate('Rating', { 
+          orderId: orderData.id, 
+          product: product, 
+          productIndex: index, //Passing product yang mau direview ke rating
+        });
     };
 
   return (
@@ -52,7 +56,7 @@ const OrderCard = ({ orderData, isActive }) => {
               </Text>
             </View>
             <TouchableOpacity 
-              onPress={handleClick}
+              onPress={() => handleClick(product, index)}
               style={[styles.button, { backgroundColor: isActive ? '#1A47BC' : '#D9D9D9' }]}
               disabled={!isActive}>
               <Text style ={{color: '#FBFAF5', fontFamily: 'afacad_Medium', fontSize: 16, textAlign: 'center',}}>Review</Text>
@@ -97,7 +101,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 5,
-    elevation: 5, // For Android shadow
+    elevation: 5,
   },
   orderId: {
     fontFamily: 'afacad_Medium',
