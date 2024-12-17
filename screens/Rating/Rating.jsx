@@ -49,26 +49,26 @@ const Rating = () => {
           <Text style={{ fontSize: 16, fontFamily: 'afacad_Bold', color: '#1A47BC' }}>
             Order ID: {orderId}
           </Text>
-          <View style={{ marginTop: 10, flexDirection: 'row', gap: 10 }}>
-            {/* Product Image */}
-            <Image source={{ uri: 'https://owcdn.net/img/675ec12e7ed1c.jpg' }} style={styles.image} />
+              <View style={ styles.productContainer }>
+                {/* Product Image */}
+                <Image source={{ uri: product.productImage }} style={styles.image} />
 
-            {/* Product Details */}
-            <View>
-              <Text style={{ fontSize: 16, fontFamily: 'afacad_Medium' }}>
-                {product.productName || 'No Name'}
-              </Text>
-              {product.selectedSize && (
-                <Text style={styles.detailText}>Size: {product.selectedSize}</Text>
-              )}
-              {product.selectedColor && (
-                <Text style={styles.detailText}>Color: {product.selectedColor}</Text>
-              )}
-              <Text style={styles.detailText}>Qty: {product.quantity || 1}</Text>
-              <Text style={styles.priceText}>
-                Rp{product.productPrice?.toLocaleString() || '0'}
-              </Text>
-            </View>
+                {/* Product Details */}
+                <View>
+                  <Text style={{ fontSize: 16, fontFamily: 'afacad_Medium' }}>
+                    {product.productName || 'No Name'}
+                  </Text>
+                  {product.selectedSize && (
+                    <Text style={styles.detailText}>Size: {product.selectedSize}</Text>
+                  )}
+                  {product.selectedColor && (
+                    <Text style={styles.detailText}>Color: {product.selectedColor}</Text>
+                  )}
+                  <Text style={styles.detailText}>Qty: {product.quantity || 1}</Text>
+                  <Text style={styles.priceText}>
+                    Rp{product.productPrice?.toLocaleString() || '0'}
+                  </Text>
+                </View>
           </View>
         </View>
 
@@ -118,6 +118,21 @@ const Rating = () => {
 export default Rating;
 
 const styles = StyleSheet.create({
+  productContainer: {
+    backgroundColor: '#FFFFFF',
+    padding: 15,
+    borderRadius: 10,
+    marginVertical: 10,
+    marginHorizontal: 1,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 30,
+  },
   review:{
     backgroundColor:'#EBF3FA',
     padding: 20,
@@ -133,6 +148,12 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 5,
     backgroundColor: '#FBFAF5',
+  },
+  image: {
+    width: 120, 
+    height: 120,
+    borderRadius: 10,
+    resizeMode: 'contain', 
   },
   scrollContainer: {
     backgroundColor: '#FBFAF5',
