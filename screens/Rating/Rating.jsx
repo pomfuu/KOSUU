@@ -1,19 +1,46 @@
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Image } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Container from '../../styles/Container'
 import HeaderNav from '../../navigation/HeaderNav'
 import OrderCard from '../Order/OrderCard';
 import { Ionicons } from '@expo/vector-icons';
 import RatingModal from './RatingModal';
 import { useRoute } from '@react-navigation/native';
+import { useAuth } from '../../authcontext';
+import { doc, getDoc, collection, addDoc, serverTimestamp  } from 'firebase/firestore';
+import { db } from '../../dbconfig';
 
 const Rating = () => {
-  const route = useRoute(); // Retrieve data passed during navigation
-  const { orderId, product } = route.params || {}; // Destructure orderId and product
+  const route = useRoute(); 
+  const { orderId, product } = route.params || {}; 
+  const { user } = useAuth();
 
+  const [cards, setCards] = useState([]);
   const [rating, setRating] = useState(0)
   const [review, setReview] = useState('')
   const [modal, setModal] = useState(false);
+
+  useEffect(() => {
+    const fetchCards = async () => {
+      try {
+        const userDoc = doc(db, 'Users', user.uid);
+        const docSnapshot = await getDoc(userDoc);
+
+        if (docSnapshot.exists()) {
+          const userData = docSnapshot.data();
+          console.log('User data:', userData);
+          setCards([userData]);  
+        } else {
+          console.log('No such document!');
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    } 
+    fetchCards();
+  }, []);
+
+  const userInfo = cards.length > 0 ? cards[0] : {};
 
   const handleRate = (idx) =>{
     setRating(idx);
@@ -27,16 +54,36 @@ const Rating = () => {
     }
   };
 
-  const handleSubmit = () =>{
-    setModal(true)
+  const handleSubmit = async() =>{
+    try {
+      setModal(true);
+      
+      // Masukkin review ke database
+      const productDocRef = doc(db, "Products", product.productID);
+
+      const newRating = {
+        orderId,
+        userID: user.uid,
+        name: userInfo.name,
+        productName: product.productName,
+        productId: product.productID,
+        review,
+        rating, //sebagai star rating
+        profileImage: userInfo.ProfileImage,
+        timestamp: serverTimestamp(), // Firestore server timestamp
+      };
+
+      const ratingsCollectionRef = collection(productDocRef, "Rating");
+      const docRef = await addDoc(ratingsCollectionRef, newRating);
+    }catch(error){
+      console.error("Error adding rating:", error);
+    }
   }
 
   const orderData = {
     id: orderId,
     product: [product],
   };
-
-  console.log(product.productImage);
 
   return (
       <View style={styles.container}>
