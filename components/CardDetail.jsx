@@ -180,7 +180,9 @@ const CardDetail = () => {
               </>
             )}
           
-          <Reviews/>
+          <Reviews
+          product = {product}
+          />
         </View>
       </ScrollView>
       <CartButton
