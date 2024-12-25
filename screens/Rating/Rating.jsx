@@ -1,15 +1,46 @@
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Image } from 'react-native'
+import React, { useState, useEffect } from 'react'
 import Container from '../../styles/Container'
 import HeaderNav from '../../navigation/HeaderNav'
 import OrderCard from '../Order/OrderCard';
 import { Ionicons } from '@expo/vector-icons';
 import RatingModal from './RatingModal';
+import { useRoute } from '@react-navigation/native';
+import { useAuth } from '../../authcontext';
+import { doc, getDoc, collection, addDoc, serverTimestamp  } from 'firebase/firestore';
+import { db } from '../../dbconfig';
 
 const Rating = () => {
+  const route = useRoute(); 
+  const { orderId, product } = route.params || {}; 
+  const { user } = useAuth();
+
+  const [cards, setCards] = useState([]);
   const [rating, setRating] = useState(0)
   const [review, setReview] = useState('')
   const [modal, setModal] = useState(false);
+
+  useEffect(() => {
+    const fetchCards = async () => {
+      try {
+        const userDoc = doc(db, 'Users', user.uid);
+        const docSnapshot = await getDoc(userDoc);
+
+        if (docSnapshot.exists()) {
+          const userData = docSnapshot.data();
+          console.log('User data:', userData);
+          setCards([userData]);  
+        } else {
+          console.log('No such document!');
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    } 
+    fetchCards();
+  }, []);
+
+  const userInfo = cards.length > 0 ? cards[0] : {};
 
   const handleRate = (idx) =>{
     setRating(idx);
@@ -23,9 +54,36 @@ const Rating = () => {
     }
   };
 
-  const handleSubmit = () =>{
-    setModal(true)
+  const handleSubmit = async() =>{
+    try {
+      setModal(true);
+      
+      // Masukkin review ke database
+      const productDocRef = doc(db, "Products", product.productID);
+
+      const newRating = {
+        orderId,
+        userID: user.uid,
+        name: userInfo.name,
+        productName: product.productName,
+        productId: product.productID,
+        review,
+        rating, //sebagai star rating
+        profileImage: userInfo.ProfileImage,
+        timestamp: serverTimestamp(), // Firestore server timestamp
+      };
+
+      const ratingsCollectionRef = collection(productDocRef, "Rating");
+      const docRef = await addDoc(ratingsCollectionRef, newRating);
+    }catch(error){
+      console.error("Error adding rating:", error);
+    }
   }
+
+  const orderData = {
+    id: orderId,
+    product: [product],
+  };
 
   return (
       <View style={styles.container}>
@@ -35,8 +93,32 @@ const Rating = () => {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.scrollContainer}>
           <View style={styles.container}>
-            <OrderCard/>
+          <Text style={{ fontSize: 16, fontFamily: 'afacad_Bold', color: '#1A47BC' }}>
+            Order ID: {orderId}
+          </Text>
+              <View style={ styles.productContainer }>
+                {/* Product Image */}
+                <Image source={{ uri: product.productImage }} style={styles.image} />
+
+                {/* Product Details */}
+                <View>
+                  <Text style={{ fontSize: 16, fontFamily: 'afacad_Medium' }}>
+                    {product.productName || 'No Name'}
+                  </Text>
+                  {product.selectedSize && (
+                    <Text style={styles.detailText}>Size: {product.selectedSize}</Text>
+                  )}
+                  {product.selectedColor && (
+                    <Text style={styles.detailText}>Color: {product.selectedColor}</Text>
+                  )}
+                  <Text style={styles.detailText}>Qty: {product.quantity || 1}</Text>
+                  <Text style={styles.priceText}>
+                    Rp{product.productPrice?.toLocaleString() || '0'}
+                  </Text>
+                </View>
           </View>
+        </View>
+
           <View style={{marginTop: 15}}>
              <View>
               <Text style={{fontSize: 18, fontFamily: 'afacad_Bold', color:'#1A47BC', marginLeft: 15,}}>Give your Rating</Text>
@@ -83,6 +165,21 @@ const Rating = () => {
 export default Rating;
 
 const styles = StyleSheet.create({
+  productContainer: {
+    backgroundColor: '#FFFFFF',
+    padding: 15,
+    borderRadius: 10,
+    marginVertical: 10,
+    marginHorizontal: 1,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 30,
+  },
   review:{
     backgroundColor:'#EBF3FA',
     padding: 20,
@@ -98,6 +195,12 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 5,
     backgroundColor: '#FBFAF5',
+  },
+  image: {
+    width: 120, 
+    height: 120,
+    borderRadius: 10,
+    resizeMode: 'contain', 
   },
   scrollContainer: {
     backgroundColor: '#FBFAF5',

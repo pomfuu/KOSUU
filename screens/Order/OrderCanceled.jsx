@@ -17,7 +17,7 @@ const OrderCanceled = () => {
     const q = query(
       ordersRef, 
       where('userID', '==', user.uid), // Cari order berdasarkan user UID
-      where('status', '==', 'Canceled') // Cari order yang status Packed
+      where('status', '==', 'Canceled') // Cari order yang status Canceled
     );
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {

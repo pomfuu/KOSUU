@@ -17,7 +17,7 @@ const OrderCompleted = () => {
     const q = query(
       ordersRef, 
       where('userID', '==', user.uid), // Cari order berdasarkan user UID
-      where('status', '==', 'Completed') // Cari order yang status Packed
+      where('status', '==', 'Completed') // Cari order yang status Completed
     );
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
