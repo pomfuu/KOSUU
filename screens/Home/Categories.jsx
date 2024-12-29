@@ -1,29 +1,37 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React from 'react'
+import { useNavigation } from '@react-navigation/native';
 
 const Categories = () => {
+
+  const navigation = useNavigation();
+
+  const handleCardPressed = (category) => {
+    navigation.navigate('FilteredCategories', { category });
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.textHeader}>Categories</Text>
       <View style={styles.buttonRow}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={() => handleCardPressed('Costume')}>
           <Text style={styles.buttonText}>Costume Set</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={() => handleCardPressed('Accessories')}>
           <Text style={styles.buttonText}>Accessories</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={() => handleCardPressed('Bags')}>
           <Text style={styles.buttonText}>Bags</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.buttonRow}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={() => handleCardPressed('Shoes')}>
           <Text style={styles.buttonText}>Shoes</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={() => handleCardPressed('Properties')}>
           <Text style={styles.buttonText}>Properties</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={() => handleCardPressed('Other')}>
           <Text style={styles.buttonText}>Other</Text>
         </TouchableOpacity>
       </View>

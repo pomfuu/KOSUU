@@ -25,6 +25,7 @@ import OrderConfirmation from './screens/Checkout/OrderConfirmation';
 import SearchList from './components/Search/SearchList';
 import SearchEmpty from './components/Search/SearchEmpty';
 import SearchFilter from './components/Search/SearchFilter';
+import FilteredCategories from './screens/Home/FilteredCategories';
 
 const Stack = createNativeStackNavigator();
 
@@ -141,6 +142,11 @@ export default function App() {
           <Stack.Screen
             name='Register'
             component={Register}
+            options={{ headerShown: false }} 
+          />
+          <Stack.Screen
+            name='FilteredCategories'
+            component={FilteredCategories}
             options={{ headerShown: false }} 
           />
         </Stack.Navigator>
