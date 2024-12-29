@@ -4,7 +4,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 import { storage } from '../config';
 import { ref, getDownloadURL } from 'firebase/storage';
-import { db } from '../dbconfig';
 import { doc, getDoc, query, getDocs, setDoc, collection, addDoc, where, deleteDoc } from 'firebase/firestore';
 import { useAuth } from '../authcontext';
 

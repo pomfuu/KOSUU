@@ -14,23 +14,6 @@ const Cart = () => {
   const [selectedItems, setSelectedItems] = useState({});
   const { user } = useAuth();
 
-  const navigation = useNavigation();
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      navigation.getParent()?.setOptions({ tabBarStyle: { display: 'none' } });
-    });
-
-    const unsubscribeBlur = navigation.addListener('blur', () => {
-      navigation.getParent()?.setOptions({ tabBarStyle: { display: 'flex' } });
-    });
-
-    return () => {
-      unsubscribe();
-      unsubscribeBlur();
-    };
-  }, [navigation]);
-
   const fetchCartItems = async (userId) => {
     try {
       const cartRef = collection(db, 'Users', userId, 'Cart');
