@@ -21,12 +21,6 @@ const Login = () => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-
-      // await signInWithEmailAndPassword(auth, email, password);
-      // navigation.navigate('Profile', {
-      //   uid: user.uid,  
-      //   email: user.email, 
-      // });
       login(user.uid, user.email); 
 
       // Navigate home screen
@@ -52,6 +46,10 @@ const Login = () => {
     navigation.navigate('Register');
   };
 
+  const handleForgetPassword = () => {
+    navigation.navigate('ForgetPassword');
+  };
+
   return (
     <View style={styles.container}>
       <SafeAreaView style={styles.safeview}>
@@ -64,24 +62,26 @@ const Login = () => {
             value={email}
             onChangeText={setEmail}
             />
-        <TextInput
-          style={styles.inputPassword}
-          placeholder="Password"
-          placeholderTextColor="#1A47BC"
-          secureTextEntry={!isPasswordVisible} 
-          value={password}
-          onChangeText={setPassword}
-        />
-        <TouchableOpacity
-          style={styles.eyeToggle}
-          onPress={() => setPasswordVisible(!isPasswordVisible)}
-        >
-          <Icon
-            name={isPasswordVisible ? 'eye' : 'eye-slash'} 
-            size={20}
-            color="#1A47BC"
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.inputPassword}
+            placeholder="Password"
+            placeholderTextColor="#1A47BC"
+            secureTextEntry={!isPasswordVisible} 
+            value={password}
+            onChangeText={setPassword}
           />
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.eyeToggle}
+            onPress={() => setPasswordVisible(!isPasswordVisible)}
+          >
+            <Icon
+              name={isPasswordVisible ? 'eye' : 'eye-slash'} 
+              size={20}
+              color="#1A47BC"
+            />
+          </TouchableOpacity>
+        </View>
         <TouchableOpacity onPress={handleClick}>
         <View style={styles.button}>
           <Text style={styles.buttonText}>Log in</Text>
@@ -90,6 +90,11 @@ const Login = () => {
       <TouchableOpacity onPress={handleRegist}>
         <View style={{ marginTop: 10 }}>
           <Text style={styles.signin}>Don't have an account? <Text style={styles.sg2}>Sign Up</Text></Text>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={handleForgetPassword}>
+        <View style={{ marginTop: 10 }}>
+          <Text style={styles.signin}>Forgot Your Password? <Text style={styles.sg2}>Reset Password</Text></Text>
         </View>
       </TouchableOpacity>
       </SafeAreaView>
@@ -171,8 +176,13 @@ const styles = StyleSheet.create({
   },
   eyeToggle: {
     position: 'absolute',
-    right: 25,
-    top: '107%',
-    marginTop: -133,
+    right: 15, // Align it to the right edge of the input
+    top: '50%',
+    transform: [{ translateY: -10 }], // Adjust for vertical center alignment
+  },
+  passwordContainer: {
+    marginTop: 5,
+    position: 'relative',
+    width: 300,
   },
 });
