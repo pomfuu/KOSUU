@@ -6,7 +6,7 @@ import { TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
 import {auth} from '../../authconfig';
-import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
+import { getAuth, sendPasswordResetEmail, fetchSignInMethodsForEmail } from 'firebase/auth';
 
 const ForgetPassword = () => {
   const [email, setEmail] = useState('');
@@ -15,15 +15,20 @@ const ForgetPassword = () => {
 
   const handleClick = async() => {
     if (email) {
-        sendPasswordResetEmail(auth, email)
-          .then(() => {
-            Alert.alert("Success", "Password reset email sent!");
-            navigation.navigate('Login');
-          })
-          .catch((error) => {
-            console.error(error);
+        try {
+          await sendPasswordResetEmail(auth, email);
+          Alert.alert("Success", "Password reset email sent!");
+          navigation.navigate('Login');
+        } catch (error) {
+          console.error(error);
+          if (error.code === 'auth/user-not-found') {
+            Alert.alert("Error", "No account exists with this email address.");
+          } else if (error.code === 'auth/invalid-email') {
+            Alert.alert("Error", "Please enter a valid email address.");
+          } else {
             Alert.alert("Error", error.message);
-          });
+          }
+        }
       } else {
         Alert.alert("Error", "Please enter your email address.");
       }
