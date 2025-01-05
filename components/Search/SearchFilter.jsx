@@ -59,7 +59,6 @@ const styles = StyleSheet.create({
   columnWrapper: {
     justifyContent: 'space-between',
     marginBottom: 10,
-    marginRight: 10,
   },
 });
 
