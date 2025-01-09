@@ -33,7 +33,7 @@ const Home = () => {
 
       setCards(cardList);
     } catch (error) {
-      console.error('Error fetching cards:', error);
+      console.error(error);
     }
   };
 

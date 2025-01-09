@@ -24,34 +24,39 @@ const Register = () => {
       alert('Passwords do not match!');
       return;
     }
-
+  
     try {
       const auth = getAuth();
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const uid = userCredential.user.uid;
-
+  
+      // Setting default role as 'user'
       const userData = {
         name: username,
         ProfileImage: "gs://teskosudulu.firebasestorage.app/istockphoto-517998264-612x612.jpg", // Gambar default untuk di awal, ga ada gambar
         address: "",
         city: "",
-        dateofbirth:"",
+        dateofbirth: "",
         gender: "",
-        mobilenumber:"",
-        postalcode:""
+        mobilenumber: "",
+        postalcode: "",
+        role: "user", 
       };
       
+      // Save user data to Firestore
       await setDoc(doc(db, "Users", uid), userData);
-
+  
       console.log('User registered:', userCredential.user);
       alert('Registration successful!');
-
+  
+      // Redirect to login after successful registration
       navigation.navigate('Login');
     } catch (error) {
       console.error('Error registering user:', error.message);
       alert(error.message);
     }
   };
+  
 
 
   const handleClick = () => {

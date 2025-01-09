@@ -102,17 +102,17 @@ const Rating = () => {
 
                 {/* Product Details */}
                 <View>
-                  <Text style={{ fontSize: 16, fontFamily: 'afacad_Medium' }}>
+                  <Text style={{ fontSize: 16, fontFamily: 'afacad_Bold' }}>
                     {product.productName || 'No Name'}
                   </Text>
                   {product.selectedSize && (
-                    <Text style={styles.detailText}>Size: {product.selectedSize}</Text>
+                    <Text style={{marginTop: 5, fontFamily: 'afacad_Medium'}}>Size: {product.selectedSize}</Text>
                   )}
                   {product.selectedColor && (
-                    <Text style={styles.detailText}>Color: {product.selectedColor}</Text>
+                    <Text style={{marginTop: 5, fontFamily: 'afacad_Medium'}}>Color: {product.selectedColor}</Text>
                   )}
-                  <Text style={styles.detailText}>Qty: {product.quantity || 1}</Text>
-                  <Text style={styles.priceText}>
+                  <Text style={{marginTop: 5, fontFamily: 'afacad_Medium'}}>Qty: {product.quantity || 1}</Text>
+                  <Text style={{marginTop: 7, fontFamily: 'afacad_Medium'}}>
                     Rp{product.productPrice?.toLocaleString() || '0'}
                   </Text>
                 </View>
@@ -166,16 +166,11 @@ export default Rating;
 
 const styles = StyleSheet.create({
   productContainer: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FBFAF5',
     padding: 15,
     borderRadius: 10,
     marginVertical: 10,
     marginHorizontal: 1,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 5,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 30,

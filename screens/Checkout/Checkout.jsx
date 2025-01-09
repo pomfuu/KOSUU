@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import Container from '../../styles/Container'
 import HeaderNav from '../../navigation/HeaderNav'
@@ -49,10 +49,10 @@ const Checkout = () => {
   const handlePlaceOrder = () => {
     console.log("standardized product : " + standardizedProducts);
     const orderData = {
-      product: standardizedProducts, // All standardized products
+      product: standardizedProducts,
       deliveryfee,
       servicefee,
-      totalPrice: totalProductPrice + deliveryfee + servicefee, // Calculate total including fees
+      totalPrice: totalProductPrice + deliveryfee + servicefee, 
     };
 
     if (selectedOption === 'Virtual Account') {
@@ -118,13 +118,71 @@ const Checkout = () => {
                   <Text style={{ fontFamily: 'afacad_Medium', fontSize: 16, color: '#1E1E1E', textAlign: 'right' }}>Rp{Number(totalProductPrice) + deliveryfee + servicefee}</Text>
                 </View>
                 <View>
-                  <Text style={{ fontFamily: 'afacad_Medium', fontSize: 16, color: '#1A47BC', marginTop: 15 }}>Address detail</Text>
-                  <View style={{backgroundColor:'#EBF3FA', borderRadius: 5, marginTop: 5}}>
-                    <View style={{ padding: 20, flexDirection:'row', gap: 10, alignItems:'center', }}>
-                      <Ionicons style={{color:'#1A47BC'}} size={16} name='location-outline'/>
-                      <Text style={{fontSize: 14, fontFamily:'afacad_Medium'}}>{userInfo.address}, {userInfo.city}, {userInfo.postalcode}</Text>
+                  <Text style={{ fontFamily: 'afacad_Medium', fontSize: 16, color: '#1A47BC', marginTop: 15 }}>
+                    Address detail
+                  </Text>
+                  <View style={{ backgroundColor: '#EBF3FA', borderRadius: 5, marginTop: 5 }}>
+                    <View style={{ padding: 20, flexDirection: 'row', gap: 10, alignItems: 'center' }}>
+                      <Ionicons style={{ color: '#1A47BC' }} size={16} name="location-outline" />
+                      <Text style={{ fontSize: 14, fontFamily: 'afacad_Medium' }}>
+                        {userInfo.address
+                          ? `${userInfo.address}, ${userInfo.city}, ${userInfo.postalcode}`
+                          : 'Address not set. Please update your address.'}
+                      </Text>
                     </View>
                   </View>
+                  {!userInfo.address || !userInfo.city || !userInfo.postalcode ? (
+                    <Modal animationType="slide" transparent={true} visible={true}>
+                      <View
+                        style={{
+                          flex: 1,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          backgroundColor: 'rgba(0,0,0,0.5)',
+                        }}
+                      >
+                        <View
+                          style={{
+                            backgroundColor: 'white',
+                            padding: 20,
+                            borderRadius: 10,
+                            width: '80%',
+                            alignItems: 'center',
+                          }}
+                        >
+                          <Text
+                            style={{
+                              fontSize: 18,
+                              fontFamily: 'afacad_Bold',
+                              marginBottom: 20,
+                              textAlign: 'center',
+                            }}
+                          >
+                            Please Update Address First
+                          </Text>
+                          <TouchableOpacity
+                            style={{
+                              backgroundColor: '#1A47BC',
+                              padding: 10,
+                              borderRadius: 5,
+                              width: '60%',
+                            }}
+                            onPress={() => navigation.goBack()}
+                          >
+                            <Text
+                              style={{
+                                color: 'white',
+                                textAlign: 'center',
+                                fontFamily: 'afacad_Bold',
+                              }}
+                            >
+                              Close
+                            </Text>
+                          </TouchableOpacity>
+                        </View>
+                      </View>
+                    </Modal>
+                  ) : null}
                 </View>
                 <View>
                   <Text style={{ fontFamily: 'afacad_Medium', fontSize: 16, color: '#1A47BC', marginTop: 15 }}>Payment detail</Text>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import Container from '../../styles/Container';
 import OrderCard from './OrderCard';
 import { db } from '../../dbconfig';
@@ -16,14 +16,16 @@ const OrderCompleted = () => {
     const ordersRef = collection(db, 'Orders');
     const q = query(
       ordersRef, 
-      where('userID', '==', user.uid), // Cari order berdasarkan user UID
-      where('status', '==', 'Completed') // Cari order yang status Completed
+      where('userID', '==', user.uid),
+      where('status', '==', 'Completed') 
     );
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
       const fetchedOrders = [];
       querySnapshot.forEach((doc) => {
-        fetchedOrders.push({ id: doc.id, ...doc.data() });
+        const orderData = doc.data();
+        const userReviewed = orderData.reviews?.some(review => review.userId === user.uid);
+        fetchedOrders.push({ id: doc.id, ...orderData, userReviewed });
       });
       setOrders(fetchedOrders);
     }, (error) => {
@@ -33,31 +35,25 @@ const OrderCompleted = () => {
     return () => unsubscribe();
   }, [user]);
 
-  console.log(orders);
-
   return (
-    <ScrollView showsVerticalScrollIndicator={false}> 
+    <ScrollView style={{marginBottom: 70}} showsVerticalScrollIndicator={false}> 
       <Container>
         <View style={styles.frame}>
           {orders.map(order => (
-            <OrderCard key={order.id} orderData={order} isActive={true} />
+            <OrderCard 
+              key={order.id} 
+              orderData={order} 
+              isActive={!order.userReviewed} 
+            />
           ))}
         </View>
       </Container>
     </ScrollView>
   );
-  
 };
 
-export default OrderCompleted;
-
 const styles = StyleSheet.create({
-  frame: {
-  },
-  text: {
-    fontSize: 18,
-    color: '#1A47BC',
-    textAlign: 'center',
-    fontFamily: 'afacad_Medium'
-  },
+  frame: {},
 });
+
+export default OrderCompleted;

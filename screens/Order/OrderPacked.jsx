@@ -36,7 +36,7 @@ const OrderPacked = () => {
   console.log(orders);
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}> 
+    <ScrollView style={{marginBottom: 70}} showsVerticalScrollIndicator={false}> 
       <Container>
         <View style={styles.frame}>
           {orders.map(order => (

@@ -16,7 +16,6 @@ const CheckoutCard = ({ product }) => {
     <View>
       {product.map((item) => (
         <View key={item.id} style={styles.cardContainer}>
-          <Text style={styles.store}>Store Name</Text>
           <View style={styles.productRow}>
             <Image
               source={{ uri: item.productImage }}
@@ -63,10 +62,6 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     borderRadius: 10,
     elevation: 2,
-    shadowColor: '#000', 
-    shadowOffset: { width: 0, height: 2 }, 
-    shadowOpacity: 0.1, 
-    shadowRadius: 5,
   },
   store: {
     fontFamily: 'afacad_Medium',
@@ -81,7 +76,6 @@ const styles = StyleSheet.create({
   },
   productRow: {
     flexDirection: 'row',
-    marginTop: 10,
     gap: 10,
     alignItems: 'center',
   },
