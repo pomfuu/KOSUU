@@ -58,13 +58,6 @@ const OrderCompleted = () => {
 
 const styles = StyleSheet.create({
   frame: {},
-  noOrderText: {
-    fontSize: 18,
-    color: '#555',
-    textAlign: 'center',
-    fontFamily: 'afacad_Bold',
-    marginTop: 20,
-  },
 });
 
 export default OrderCompleted;
