@@ -29,9 +29,7 @@ const VirtualAccount = () => {
   };
 
   const handleOk = async () => {
-    //Buat handle masukkin order ke database
-    console.log(product);
-    try{
+    try {
       const formattedProducts = product.map((product) => ({
         productID: product.productID,
         productName: product.productName,
@@ -40,28 +38,33 @@ const VirtualAccount = () => {
         ...(product.selectedVariant != null && { selectedVariant: product.selectedVariant }),
         ...(product.selectedSize != null && { selectedSize: product.selectedSize }),
         ...(product.selectedColor != null && { selectedColor: product.selectedColor }),
-        quantity: (product.quantity || 1)
-    }));
-
-    const newProductData = {
-      userID: user.uid,
-      sellerID: "tesID",
-      product: formattedProducts,
-      status: "Packed",
-      orderDate: serverTimestamp(),
-      totalPrice: Number(totalPrice)
-    };
-      
+        quantity: (product.quantity || 1),
+        vendor: product.vendor, 
+      }));
+  
+      const uniqueVendors = [
+        ...new Set(formattedProducts.map((product) => product.vendor)),
+      ];
+  
+      const newProductData = {
+        userID: user.uid,
+        sellerID: uniqueVendors.join(', '), 
+        product: formattedProducts,
+        status: "Packed",
+        orderDate: serverTimestamp(),
+        totalPrice: Number(totalPrice),
+      };
+  
       console.log("Formatted Products: ", formattedProducts);
       console.log("New Product Data: ", newProductData);
-
-      const docRef = await addDoc(collection(db, "Orders"), newProductData);
   
-      navigation.navigate('OrderConfirmation')
-    }catch(e){
+      const docRef = await addDoc(collection(db, "Orders"), newProductData);
+      navigation.navigate('OrderConfirmation');
+    } catch (e) {
       console.error("Error adding document: ", e);
     }
-  }
+  };
+  
 
   return (
       <View style={styles.container}>

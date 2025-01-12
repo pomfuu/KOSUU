@@ -46,7 +46,7 @@ const FilteredCategories = ({ route }) => {
     setSearchTerm(searchText);
   };
 
-  const renderCard = ({ item }) => {
+  const renderCard= ({ item }) => {
     return (
       <View style={styles.cardWrapper}>
         <Card {...item} id={item.id}/>
@@ -54,8 +54,8 @@ const FilteredCategories = ({ route }) => {
     );
   };
   return (
-    <Container>
-    <HeaderNav title={`Filter By ${category}`}  />
+    <View style={{ backgroundColor:'#FBFAF5' }}>
+      <HeaderNav title={`Filter By ${category}`}  />
       <SafeAreaView>
         <ScrollView 
           showsVerticalScrollIndicator={false} 
@@ -75,7 +75,7 @@ const FilteredCategories = ({ route }) => {
           </View>
         </ScrollView>
       </SafeAreaView>
-    </Container>
+    </View>
     
   );
   
@@ -85,16 +85,17 @@ export default FilteredCategories;
 
 const styles = StyleSheet.create({
   scrollContainer: {
-    paddingBottom: 150
+    paddingBottom: 450
   },
   carouselWrapper: {
     flex: 1,
     marginTop: 0,
     paddingTop: 0,
+    margin: 20,
   },
   row: {
     justifyContent: 'space-between',
-    marginBottom: 10,
+    // marginBottom: 250,
   },
   cardWrapper: {
     flex: 1,
@@ -103,7 +104,6 @@ const styles = StyleSheet.create({
     color: '#1A47BC',
     fontSize: 16, 
     fontFamily: 'afacad_Bold',
-    marginTop: 10,
     marginBottom: 5,
   },
 });

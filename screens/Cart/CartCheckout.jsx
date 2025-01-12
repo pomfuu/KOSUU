@@ -2,15 +2,20 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 
-const CartCheckout = ({ totalPrice, showCheckoutButton, selectedItems  }) => {
+const CartCheckout = ({ totalPrice, showCheckoutButton, selectedItems, onCheckoutComplete }) => {
   const navigation = useNavigation();
 
   const handleCheckout = () => {
     console.log('Selected Items:', selectedItems);
+
     navigation.navigate('Checkout', { product: selectedItems });
+
+    if (onCheckoutComplete) {
+      onCheckoutComplete(selectedItems);
+    }
   };
 
-  if (!showCheckoutButton) return null
+  if (!showCheckoutButton) return null;
 
   return (
     <View style={styles.container}>
@@ -41,12 +46,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 120,
     paddingVertical: 15,
     borderRadius: 15,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   buttonText: {
     color: '#FBFAF5',
     fontSize: 16,
     fontFamily: 'afacad_Bold',
-    alignSelf:'center'
+    alignSelf: 'center',
   },
 });

@@ -6,8 +6,9 @@ import { storage } from '../config';
 import { ref, getDownloadURL } from 'firebase/storage';
 import { doc, getDoc, query, getDocs, setDoc, collection, addDoc, where, deleteDoc } from 'firebase/firestore';
 import { useAuth } from '../authcontext';
+import { db } from '../dbconfig';
 
-const Card = ({ id, showHeader, category, name, price, rating, description, stock, material, sizeChart, dimension, condition, notes, variant, size, color, imageURL }) => {
+const Card = ({ id, showHeader, category, name, price, rating, description, stock, material, sizeChart, dimension, condition, notes, variant, size, color, imageURL, vendor }) => {
   const navigation = useNavigation();
   const { user } = useAuth();
 
@@ -28,7 +29,8 @@ const Card = ({ id, showHeader, category, name, price, rating, description, stoc
       notes, 
       variant, 
       size, 
-      color 
+      color,
+      vendor,
     });
   };
   
@@ -36,25 +38,17 @@ const Card = ({ id, showHeader, category, name, price, rating, description, stoc
   const [imageUrl, setImageUrl] = useState(null);
 
   const toggleWishlist = async () => {
-
     try {
-      //Cari subcollection Wishlist dari Users
       const wishlistRef = collection(doc(db, 'Users', user.uid), 'Wishlist');
-  
-      //Tambahin ke variabel itemDetails dulu untuk barang yang mau di wishlist
       const newWishlistItem = {
         productID: id,
         productName: name,
         productImage: imageUrl,
         productPrice: price,
       };
-  
-      // Cek dulu udah di wishlist apa belom
       const existingItemQuery = query(wishlistRef, where('productID', '==', id));
       const existingItemsSnapshot = await getDocs(existingItemQuery);
   
-      const existingItem = existingItemsSnapshot.docs.find(doc => doc.data().productID === id);
-      
       if (!existingItemsSnapshot.empty) {
         console.log('Item already in wishlist. Removing it.');
         const itemDoc = existingItemsSnapshot.docs[0];
@@ -66,9 +60,8 @@ const Card = ({ id, showHeader, category, name, price, rating, description, stoc
         console.log('Item added to wishlist');
       }
     } catch (error) {
-      console.error('Error adding item to wishlist:', error);
+      console.error('Error adding/removing item to/from wishlist:', error);
     }
-
   };
 
   useEffect(() => {
