@@ -17,7 +17,7 @@ const CardDetail = () => {
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
 
-  const { id, name, category, price, image, rating, description, stock, material, sizeChart, dimension, condition, notes, variant, size, color } = route.params;
+  const { id, name, category, price, image, rating, description, stock, material, sizeChart, dimension, condition, notes, variant, size, color, vendor } = route.params;
 
   const handleVariantPress = (index) => {
     if (selectedVariant === index) {
@@ -48,7 +48,7 @@ const CardDetail = () => {
   const selectedSizeValue = selectedSize !== null ? size[selectedSize] : null;
   const selectedColorValue = selectedColor !== null ? color[selectedColor] : null;
 
-  const product = {id, name, image, price, selectedVariantValue, selectedSizeValue, selectedColorValue };
+  const product = {id, name, image, price, selectedVariantValue, selectedSizeValue, selectedColorValue, vendor };
 
   return (
     <View style={styles.container}>
@@ -202,6 +202,7 @@ const CardDetail = () => {
       <CartButton
         product = {product}
         userId = {user.uid}
+        vendor = {vendor}
       />
     </View>
   );

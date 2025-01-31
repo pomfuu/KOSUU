@@ -14,7 +14,10 @@ import { user } from '../../authconfig';
 
 const Home = () => {
   const [cards, setCards] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(''); //
+  const [searchTerm, setSearchTerm] = useState(''); 
+
+  const popularItems = cards.slice(0, 6);
+  const exploreMoreItems = cards.slice(6);
 
   const fetchProducts = async (searchTerm = '') => {
     try {
@@ -66,7 +69,7 @@ const Home = () => {
             <Text style={styles.textHeader}>Popular items</Text>
             <View>
               <FlatList
-                data={cards}
+                data={popularItems}
                 renderItem={renderCard}
                 keyExtractor={item => item.id}
                 numColumns={2}
@@ -78,7 +81,7 @@ const Home = () => {
             <Text style={styles.textHeader}>Explore more items</Text>
             <View>
               <FlatList
-                data={cards}
+                data={exploreMoreItems}
                 renderItem={renderCard}
                 keyExtractor={item => item.id}
                 numColumns={2}

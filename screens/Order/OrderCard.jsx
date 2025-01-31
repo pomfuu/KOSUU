@@ -17,11 +17,11 @@ const OrderCard = ({ orderData, isActive }) => {
   return (
     <View>
       <Text style={styles.orderId}>
-        <Text style={{ fontFamily: 'afacad_Bold' }}>Order ID: </Text> {orderData.id}
+        <Text style={{ fontFamily: 'afacad_Bold' }}>Order ID: </Text>{' '}
+        {orderData.id}
       </Text>
       <View style={styles.cardContainer}>
         <View>
-          <Text style={styles.store}>Store Name</Text>
           {orderData.product?.map((product, index) => (
             <View key={index} style={{ flexDirection: 'row', marginTop: 10, gap: 10 }}>
               <Image
@@ -79,11 +79,13 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
     marginHorizontal: 1,
+    marginBottom: 20,
   },
   orderId: {
     fontFamily: 'afacad_Medium',
     fontSize: 14,
     marginBottom: 10,
+    marginTop: 10,
     color: '#555',
   },
   store: {

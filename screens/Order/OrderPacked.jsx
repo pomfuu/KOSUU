@@ -39,14 +39,17 @@ const OrderPacked = () => {
     <ScrollView style={{marginBottom: 70}} showsVerticalScrollIndicator={false}> 
       <Container>
         <View style={styles.frame}>
-          {orders.map(order => (
-            <OrderCard key={order.id} orderData={order} isActive={false} />
-          ))}
+          {orders.length === 0 ? (
+            <Text style={styles.noOrderText}>No Order Yet</Text>
+          ) : (
+            orders.map(order => (
+              <OrderCard key={order.id} orderData={order} isActive={false} />
+            ))
+          )}
         </View>
       </Container>
     </ScrollView>
   );
-  
 };
 
 export default OrderPacked;

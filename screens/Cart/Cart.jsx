@@ -76,6 +76,16 @@ const Cart = () => {
 
   const selectedCartItems = cartItems.filter((item) => selectedItems[item.id]);
 
+  const handleCheckoutComplete = async (items) => {
+    try {
+      for (const item of items) {
+        await deleteCartItem(item.id);
+      }
+    } catch (error) {
+      console.error('Error removing items after checkout:', error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <HeaderNav title="My Cart" />
@@ -96,7 +106,12 @@ const Cart = () => {
           </View>
         </SafeAreaView>
       </ScrollView>
-      <CartCheckout totalPrice={totalPrice} showCheckoutButton={totalPrice > 0} selectedItems={selectedCartItems}/>
+        <CartCheckout
+          totalPrice={totalPrice}
+          showCheckoutButton={totalPrice > 0}
+          selectedItems={selectedCartItems}
+          onCheckoutComplete={handleCheckoutComplete}
+        />
     </View>
   );
 };

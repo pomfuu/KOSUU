@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, Dimensions, TouchableOpacity, Easing } from 'react-native';
+import { View, StyleSheet, Text, Dimensions, TouchableOpacity, Easing, LogBox } from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import * as Font from 'expo-font';
 import HeaderNav from '../../navigation/HeaderNav';
@@ -9,14 +9,28 @@ import OrderSent from './OrderSent';
 import OrderCompleted from './OrderCompleted';
 import OrderCanceled from './OrderCanceled';
 
+LogBox.ignoreLogs([
+  'Text strings must be rendered within a Text component',
+]);
+
 const Order = () => {
   const [index, setIndex] = useState(0);
+  const [orderData, setOrderData] = useState([]);
   const [routes] = useState([
     { key: 'packed', title: 'Packed' },
     { key: 'sent', title: 'Sent' },
     { key: 'completed', title: 'Completed' },
     { key: 'canceled', title: 'Canceled' },
   ]);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      const orders = []; 
+      setOrderData(orders);
+    };
+
+    fetchOrders();
+  }, []);
 
   const CustomTabBar = (props) => (
     <View style={styles.customTabBar}>
@@ -47,6 +61,7 @@ const Order = () => {
       })}
     </View>
   );
+  
 
   const renderScene = SceneMap({
     packed: OrderPacked,

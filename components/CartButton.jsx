@@ -20,6 +20,7 @@ const CartButton = ({ product, userId }) => {
         console.log('Image URL:', product.image);
         console.log('Price:', product.price);
         console.log('User ID:', userId);
+        console.log('vendor:', product.vendor);
 
         const userRef = doc(db, 'Users', userId); 
         const cartRef = collection(userRef, 'Cart');
@@ -40,6 +41,7 @@ const CartButton = ({ product, userId }) => {
                 productImage: product.image,
                 productPrice: Number(product.price),
                 userId: userId,
+                vendor: product.vendor,
                 quantity: 1,
                 ...(product.selectedVariantValue && { selectedVariant: product.selectedVariantValue }), 
                 ...(product.selectedColorValue && { selectedColor: product.selectedColorValue }), 
@@ -69,6 +71,7 @@ const CartButton = ({ product, userId }) => {
             productID: product.id,
             productPrice: product.price,
             productImage: product.image,
+            vendor: product.vendor,
         };
 
         console.log("Product for Checkout:", productWithSelections);

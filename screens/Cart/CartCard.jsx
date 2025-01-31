@@ -1,11 +1,11 @@
 import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 
 const CartCard = ({ product, isSelected, onToggleSelect, onDelete }) => {
   return (
     <View style={styles.card}>
-      <Text style={styles.store}>Store Name</Text>
+      <Text style={styles.store}>{product.vendor || "Unknown Vendor"}</Text>
       <View style={styles.row}>
         <CheckBox
           checked={isSelected}

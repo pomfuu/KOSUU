@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import Container from '../../styles/Container';
 import OrderCard from './OrderCard';
 import { db } from '../../dbconfig';
@@ -36,16 +36,20 @@ const OrderCompleted = () => {
   }, [user]);
 
   return (
-    <ScrollView style={{marginBottom: 70}} showsVerticalScrollIndicator={false}> 
+    <ScrollView style={{ marginBottom: 70 }} showsVerticalScrollIndicator={false}> 
       <Container>
         <View style={styles.frame}>
-          {orders.map(order => (
-            <OrderCard 
-              key={order.id} 
-              orderData={order} 
-              isActive={!order.userReviewed} 
-            />
-          ))}
+          {orders.length === 0 ? (
+            <Text style={styles.noOrderText}>No Order Yet</Text>
+          ) : (
+            orders.map(order => (
+              <OrderCard 
+                key={order.id} 
+                orderData={order} 
+                isActive={!order.userReviewed} 
+              />
+            ))
+          )}
         </View>
       </Container>
     </ScrollView>
