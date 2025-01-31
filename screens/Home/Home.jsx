@@ -6,7 +6,6 @@ import Carousel from './Carousel';
 import SearchBar from '../../components/SearchBar';
 import Categories from './Categories';
 import Card from '../../components/Card';
-import Tes from '../../components/Tes';
 import PopularCategories from './PopularCategories';
 import { db } from '../../dbconfig';
 import { doc, collection, getDocs } from 'firebase/firestore';

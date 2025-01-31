@@ -8,6 +8,7 @@ import Reviews from './Reviews'
 import CartButton from './CartButton'
 import Card1Image from '../assets/KOSU/Card1.png';
 import { useAuth } from '../authcontext';
+import Carousel from 'react-native-snap-carousel'
 
 const CardDetail = () => {
   const route = useRoute();
@@ -58,7 +59,20 @@ const CardDetail = () => {
         contentContainerStyle={styles.scrollContainer}
       >
         <View>
-          <Image style={styles.productImage} source={{ uri: image }} />
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContainer}>
+        {/* Image Slider */}
+        <Carousel
+          data={image} // image should be an array
+          renderItem={({ item }) => (
+            <Image style={styles.productImage} source={{ uri: item }} />
+          )}
+          sliderWidth={width}
+          itemWidth={width * 0.8} // Adjust width of each slide
+          loop
+          autoplay
+          autoplayInterval={3000}
+        />
+        </ScrollView>
         </View>
         <View style={styles.detail}>
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
